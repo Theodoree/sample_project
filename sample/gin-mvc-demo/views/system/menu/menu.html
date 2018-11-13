@@ -1,0 +1,35 @@
+{{ define "system/menu/menu.html" }}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>菜单管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">菜单名称</div>
+                                    <input type="text" class="form-control" name="name" id="menuName" placeholder="菜单名称" >
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <button class="btn btn-primary" onclick="Menu.search()"/><i class="fa fa-search"></i>&nbsp;搜索</button>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="menuTableToolbar" role="group">
+                            <button class="btn btn-primary" onclick="Menu.openAddMenu()"/><i class="fa fa-plus"></i>&nbsp;添加</button>
+                            <button class="btn btn-info" onclick="Menu.openChangeMenu()" space="true"/><i class="fa fa-edit">&nbsp;修改</i></button>
+                            <button class="btn btn-danger" onclick="Menu.delMenu()" space="true"/><i class="fa fa-remove">&nbsp;删除</i></button>
+                        </div>
+                        <table id="menuTable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/public/modular/system/menu/menu.js"></script>
+{{ end }}
