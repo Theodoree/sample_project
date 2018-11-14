@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/bradfitz/gomemcache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/dchest/uniuri" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gin-contrib/sse" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gin-gonic/contrib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/globalsign/mgo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gorilla/context" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gorilla/securecookie" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gorilla/sessions" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/jinzhu/gorm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/jinzhu/inflection" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/kidstuff/mongostore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/kr/beanstalk" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/memcachier/mc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/robfig/cron" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/robfig/go-cache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/thedevsaddam/govalidator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/utrack/gin-csrf" vcs="Git" />
+  </component>
+</project>
