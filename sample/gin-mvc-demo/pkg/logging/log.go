@@ -29,9 +29,15 @@ const (
 	FATAL
 )
 
-func init() {
-	filePath := getLogFileFullPath()
-	F = openLogFile(filePath)
+func Setup() {
+	var err error
+	filePath := getLogFilePath()	//获取路径
+	fileName := getLogFileName()   //获取Log Name
+	F, err = openLogFile(fileName, filePath)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	logger = log.New(F, DefaultPrefix, log.LstdFlags)
 }
 

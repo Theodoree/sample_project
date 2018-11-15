@@ -1,9 +1,6 @@
 package models
 
-import (
-	"time"
-	"github.com/jinzhu/gorm"
-)
+import "github.com/jinzhu/gorm"
 
 type Article struct {
 	Model
@@ -18,65 +15,95 @@ type Article struct {
 }
 
 //是否存在
-func ExistArticleByID(id int) bool {
+func ExistArticleByID(id int) (bool, error) {
 	var article Article
-	db.Select("id").Where("id = ?", id).First(&article)
-
-	if article.ID > 0 {
-		return true
+	err := db.Select("id").Where("id = ? AND deleted_on = ? ", id, 0).First(&article).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
 	}
 
-	return false
+	if article.ID > 0 {
+		return true, nil
+	}
+
+	return false, nil
 }
 
 //获取所有符合条件的数量
-func GetArticleTotal(maps interface{}) (count int) {
-	db.Model(&Article{}).Where(maps).Count(&count)
-	return
+func GetArticleTotal(maps interface{}) (int, error) {
+	var count int
+	if err := db.Model(&Article{}).Where(maps).Count(&count).Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
 }
 /*Preload 它会执行两条SQL，分别是
 SELECT * FROM blog_articles;
 SELECT * FROM blog_tag WHERE id IN (1,2,3,4);*/
-func GetArticles(pageNum int, pageSize int, maps interface{}) (articles []Article) {
-	db.Preload("Tag").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles)
-	return
+func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error) {
+	var articles []*Article
+	err := db.Preload("Tag").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return articles, nil
 }
 
-func GetArticle(id int) (article Article) {
-	db.Where("id = ?", id).First(&article)
-	db.Model(&article).Related(&article.Tag) //通过Related去关联到Tag
-	return
-}
 
+func GetArticle(id int) (*Article, error) {
+	var article Article
+	err := db.Where("id = ? AND deleted_on = ? ", id, 0).First(&article).Related(&article.Tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return &article, nil
+}
 //更新
-func EditArticle(id int, data interface{}) bool {
-	db.Model(&Article{}).Where("id = ?", id).Updates(data)
-	return true
+func EditArticle(id int, data interface{}) error {
+	if err := db.Model(&Article{}).Where("id = ? AND deleted_on = ? ", id, 0).Updates(data).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 //增加
-func AddArticle(data map[string]interface{}) bool {
-	db.Create(&Article{
-		TagID:     data["tag_id"].(int),
-		Title:     data["title"].(string),
-		Desc:      data["desc"].(string),
-		Content:   data["content"].(string),
-		CreatedBy: data["created_by"].(string),
-		State:     data["state"].(int),
-	})
-	return true
+func AddArticle(data map[string]interface{}) error {
+	article := Article{
+		TagID:         data["tag_id"].(int),
+		Title:         data["title"].(string),
+		Desc:          data["desc"].(string),
+		Content:       data["content"].(string),
+		CreatedBy:     data["created_by"].(string),
+		State:         data["state"].(int),
+	}
+	if err := db.Create(&article).Error; err != nil {
+		return err
+	}
+
+	return nil
 }
 
 //删除
-func DeleteArticle(id int) bool {
-	db.Where("id = ?", id).Delete(Article{})
-	return true
-}
+func DeleteArticle(id int) error {
+	if err := db.Where("id = ?", id).Delete(Article{}).Error; err != nil {
+		return err
+	}
 
-func (article *Article) BeforeCreate(scope *gorm.Scope) error {
-	scope.SetColumn("CreatedOn", time.Now().Format("2006-01-02 15:04:05"))
 	return nil
 }
+
+func CleanAllArticle() error {
+	if err := db.Unscoped().Where("deleted_on != ? ", 0).Delete(&Article{}).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
 
 /*
 gorm所支持的回调方法：

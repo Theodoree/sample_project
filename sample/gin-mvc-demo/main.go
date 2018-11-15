@@ -1,19 +1,27 @@
 package main
 
 import (
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
+	"github.com/fvbock/endless"
 	"fmt"
 	"log"
 	"syscall"
-	"github.com/fvbock/endless"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/models"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/routers"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/gredis"
 )
 
 func main() {
-	endless.DefaultReadTimeOut = setting.ReadTimeout
-	endless.DefaultWriteTimeOut = setting.WriteTimeout
+	setting.Setup()
+	models.Setup()
+	logging.Setup()
+	gredis.Setup()
+	endless.DefaultReadTimeOut = setting.ServerSetting.ReadTimeout
+	endless.DefaultWriteTimeOut = setting.ServerSetting.WriteTimeout
 	endless.DefaultMaxHeaderBytes = 1 << 20
-	endPoint := fmt.Sprintf(":%d", setting.HTTPPort)
+	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
+
 	server := endless.NewServer(endPoint, routers.InitRouter())
 	server.BeforeBegin = func(add string) {
 		log.Printf("Actual pid is %d", syscall.Getpid())

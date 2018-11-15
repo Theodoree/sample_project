@@ -1,15 +1,13 @@
 package api
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/astaxie/beego/validation"
 
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/errors"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/models"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/util"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/app"
 )
 
 type auth struct {
@@ -18,6 +16,8 @@ type auth struct {
 }
 
 func GetAuth(c *gin.Context) {
+	appG := app.Gin{c}
+
 	username := c.Query("username")
 	password := c.Query("password")
 
@@ -26,30 +26,23 @@ func GetAuth(c *gin.Context) {
 	ok, _ := valid.Valid(&a)
 
 	data := make(map[string]interface{})
-	code := errors.INVALID_PARAMS
-	if ok {
-		isExist := models.CheckAuth(username, password) //检测账户是否合法
-		if isExist {
-			token, err := util.GenerateToken(username, password) //返回签名后的Token
-			if err != nil {
-				code = errors.ERROR_AUTH_TOKEN
-			} else {
-				data["token"] = token //设置token
-				code = errors.SUCCESS
-			}
-
-		} else {
-			code = errors.ERROR_AUTH
-		}
-	} else {
-		for _, err := range valid.Errors {
-			logging.Info(err.Key, err.Message)
-		}
+	if !ok {
+		app.MarkErrors(valid.Errors)
+		appG.Response(errors.SUCCESS, errors.INVALID_PARAMS, data)
+		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  errors.GetMsg(code),
-		"data": data,
-	})
+	isExist := models.CheckAuth(username, password) //检测账户是否合法
+	if !isExist {
+		appG.Response(errors.SUCCESS, errors.ERROR_AUTH, data)
+		return
+	}
+	token, err := util.GenerateToken(username, password) //返回签名后的Token
+	if err != nil {
+		appG.Response(errors.SUCCESS, errors.ERROR_AUTH_TOKEN, data)
+		return
+	}
+	data["token"] = token //设置token
+
+	appG.Response(errors.SUCCESS, errors.SUCCESS, data)
 }

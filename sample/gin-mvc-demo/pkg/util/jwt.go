@@ -9,7 +9,7 @@ import (
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
 )
 
-var jwtSecret = []byte(setting.JwtSecret)
+var jwtSecret = []byte(setting.AppSetting.JwtSecret)
 
 type Claims struct {
 	Username string `json:"username"`

@@ -193,16 +193,9 @@ func (n *node) addRoute(path string, handlers HandlersChain) {
 						}
 					}
 
-					pathSeg := path
-					if n.nType != catchAll {
-						pathSeg = strings.SplitN(path, "/", 2)[0]
-					}
-					prefix := fullPath[:strings.Index(fullPath, pathSeg)] + n.path
-					panic("'" + pathSeg +
-						"' in new path '" + fullPath +
+					panic("path segment '" + path +
 						"' conflicts with existing wildcard '" + n.path +
-						"' in existing prefix '" + prefix +
-						"'")
+						"' in path '" + fullPath + "'")
 				}
 
 				c := path[0]
@@ -239,7 +232,7 @@ func (n *node) addRoute(path string, handlers HandlersChain) {
 
 			} else if i == len(path) { // Make node a (in-path) leaf
 				if n.handlers != nil {
-					panic("handlers are already registered for path '" + fullPath + "'")
+					panic("handlers are already registered for path ''" + fullPath + "'")
 				}
 				n.handlers = handlers
 			}
@@ -254,7 +247,7 @@ func (n *node) addRoute(path string, handlers HandlersChain) {
 func (n *node) insertChild(numParams uint8, path string, fullPath string, handlers HandlersChain) {
 	var offset int // already handled bytes of the path
 
-	// find prefix until first wildcard (beginning with ':' or '*')
+	// find prefix until first wildcard (beginning with ':'' or '*'')
 	for i, max := 0, len(path); numParams > 0; i++ {
 		c := path[i]
 		if c != ':' && c != '*' {
