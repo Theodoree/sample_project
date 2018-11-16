@@ -14,7 +14,7 @@ Cookie_id = 'SUID'
 # TEST_URL = 'https://weixin.sogou.com/'
 
 ### 豆瓣
-TEST_URL = 'https://mp.weixin.qq.com'
+TEST_URL = 'https://www.zhipin.com'
 
 
 

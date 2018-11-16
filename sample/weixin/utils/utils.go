@@ -4,6 +4,7 @@ import (
 	"time"
 	"fmt"
 	"github.com/Theodoree/sample_project/sample/weixin/config"
+	"github.com/parnurzeal/gorequest"
 )
 
 func GetProxy()string{
@@ -19,8 +20,6 @@ func TimeOut(ip string){
 	reqeuest :=gorequest.New()
 	Send := fmt.Sprintf(`{"ip":"%s"}`,ip)
 	reqeuest.Post(config.TimeOut_url).Type(`form`).Send(Send).End()
-
-
 }
 
 
@@ -47,7 +46,4 @@ func CheckErrs(errs []error)bool{
 	}
 	}
 	return false
-}
-func Request(){
-
 }
