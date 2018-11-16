@@ -35,13 +35,13 @@ func (Mysql *Mysql) Run() {
 
 func (Mysql *Mysql) Insert(a *models.Recruitment) {
 	db := Mysql.Db
-	Query := `INSERT INTO demo.Boos (Position,Url,Desc,CompanyInfo,Location,Company,Slary,InsertTime) VALUES(
+	Query := `INSERT INTO demo.Boos (Position,Url,des,CompanyInfo,Location,Company,Slary,InsertTime) VALUES(
 	'%s','%s','%s','%s','%s','%s','%s','%s')`
-	_, _, err := db.Query(Query,db.Escape(a.Position),db.Escape(a.Url),db.Escape(a.Desc),
+	_, _, err := db.Query(Query,db.Escape(a.Position),db.Escape(a.Url),db.Escape(a.Des),
 		db.Escape(a.CompanyInfo),db.Escape(a.Location),db.Escape(a.Company),db.Escape(a.Slary),
 		db.Escape(utils.Get_Now()))
 	if utils.CheckErr(err)  {
-		fmt.Printf(Query,db.Escape(a.Position),db.Escape(a.Url),db.Escape(a.Desc),
+		fmt.Printf(Query,db.Escape(a.Position),db.Escape(a.Url),db.Escape(a.Des),
 			db.Escape(a.CompanyInfo),db.Escape(a.Location),db.Escape(a.Company),db.Escape(a.Slary),
 			db.Escape(utils.Get_Now()))
 		log.Println(`Insert `,err)

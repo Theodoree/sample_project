@@ -80,9 +80,9 @@ func (Spider *WebSpider) GetRecruitmentUrl(url string) (UrlList []string) {
 }
 
 func (Spider *WebSpider) Do(UrlList []string, ) (RecruitmentList []*models.Recruitment) {
-
 	for _, url := range UrlList {
 		try := 0
+		loop:
 		for try < setting.ServerSetting.Max_Try {
 			time.Sleep(time.Duration(rand.Float64() * 10))
 			proxy := utils.GetProxy()
@@ -111,22 +111,21 @@ func (Spider *WebSpider) Do(UrlList []string, ) (RecruitmentList []*models.Recru
 				Position := s.Find(` div.job-primary  div.info-primary div.name h1 `).Text()
 				SalaryRege, _ := regexp.Compile(`\d*K-\d*K`)
 				salary := fmt.Sprintf("%s", SalaryRege.Find([]byte(s.Find(` div.job-primary  div.info-primary span.badge `).Text())))
-				Desc := strings.TrimSpace(s.Find(`div.detail-content div:nth-child(1) div.text  `).Text())
+				Des := strings.TrimSpace(s.Find(`div.detail-content div:nth-child(1) div.text  `).Text())
 				CompanyInfo := strings.TrimSpace(s.Find(`div.detail-content div:nth-child(2) div.text  `).Text())
 				Company := strings.TrimSpace(s.Find(`div.detail-content div:nth-child(4) div.name  `).Text())
 				Location := strings.TrimSpace(s.Find(`div.detail-content div:nth-child(5) div.location-address  `).Text())
 				RecruitmentList = append(RecruitmentList, &models.Recruitment{
 					Position:    Position,
 					Url:         url,
-					Desc:        Desc,
+					Des:        Des,
 					CompanyInfo: CompanyInfo,
 					Location:    Location,
 					Company:     Company,
 					Slary:       salary,
 				})
-			fmt.Println(Position)
 			})
-			break
+			break loop
 		}
 	}
 	return RecruitmentList

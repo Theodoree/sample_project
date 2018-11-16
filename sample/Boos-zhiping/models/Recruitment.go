@@ -6,7 +6,7 @@ package models
 type Recruitment struct{
 	Position string
 	Url string
-	Desc string
+	Des string
 	CompanyInfo string
 	Location string
 	Company string
