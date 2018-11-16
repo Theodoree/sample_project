@@ -1,17 +1,17 @@
 package upload
 
 import (
+	"fmt"
+	"log"
+	"mime/multipart"
 	"os"
 	"path"
-	"log"
-	"fmt"
 	"strings"
-	"mime/multipart"
 
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/util"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/file"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/util"
 )
 
 //返回文件访问路径
@@ -21,11 +21,11 @@ func GetImageFullUrl(name string) string {
 
 //
 func GetImageName(name string) string {
-	ext := path.Ext(name) //获取后缀
+	ext := path.Ext(name)                     //获取后缀
 	fileName := strings.TrimSuffix(name, ext) //组成全名
 	fileName = util.EncodeMD5(fileName)
 
-	return fileName + ext	//Md5+ext
+	return fileName + ext //Md5+ext
 }
 
 //返回upload/images/ 路径

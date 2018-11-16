@@ -1,6 +1,5 @@
 package gredis
 
-
 import (
 	"encoding/json"
 	"time"

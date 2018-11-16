@@ -3,19 +3,18 @@ package v1
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/errors"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/util"
-	"github.com/Unknwon/com"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/models"
-	"strconv"
-	"github.com/astaxie/beego/validation"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/service/tag_service"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/app"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/errors"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/export"
-	"github.com/Theodoree/gin/go-gin-example/pkg/e"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/util"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/service/tag_service"
+	"github.com/Unknwon/com"
+	"github.com/astaxie/beego/validation"
+	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 //获取多个文章标签
@@ -62,12 +61,12 @@ func AddTag(c *gin.Context) {
 	tagService := tag_service.Tag{Name: name, State: state, CreatedBy: createdBy}
 	exists, err := tagService.ExistByName()
 	if err != nil { //获取标签失败
-		AppG.Response(http.StatusOK, e.ERROR_EXIST_TAG_FAIL, nil)
+		AppG.Response(http.StatusOK, errors.ERROR_EXIST_TAG_FAIL, nil)
 		return
 	}
 
 	if exists { //标签已经存在
-		AppG.Response(http.StatusOK, e.ERROR_EXIST_TAG, nil)
+		AppG.Response(http.StatusOK, errors.ERROR_EXIST_TAG, nil)
 		return
 	}
 	err = tagService.Add()
@@ -95,15 +94,14 @@ func EditTag(c *gin.Context) {
 	}
 	valid.Required(id, `id`).Message(`ID不能为空`)
 	valid.Required(modifiedBy, `modified_by`).Message(`状态不能为空`)
-	valid.MaxSize(modifiedBy, 80, `modified_by`).Message(`最长为二十个汉字或八十个字符`)
-	valid.MaxSize(name, 80, `name`).Message(`最长为二十个汉字或八十个字符`)
+	valid.MaxSize(modifiedBy, 80, `modified_by`).Message(`最长为八十个字符`)
+	valid.MaxSize(name, 80, `name`).Message(`最长为八十个字符`)
 	if valid.HasErrors() {
 		app.MarkErrors(valid.Errors)
 		AppG.Response(http.StatusOK, errors.INVALID_PARAMS, nil)
 		return
 	}
-
-	tagService := tag_service.Tag{Name: name, State: state, ModifiedBy: modifiedBy}
+	tagService := tag_service.Tag{ID: id, Name: name, State: state, ModifiedBy: modifiedBy}
 	exists, err := tagService.ExistByID()
 	if err != nil { //获取标签失败
 		AppG.Response(http.StatusOK, errors.ERROR_EXIST_TAG_FAIL, nil)
@@ -111,7 +109,7 @@ func EditTag(c *gin.Context) {
 	}
 
 	if !exists { //没有获取到Tag
-		AppG.Response(http.StatusOK, errors.ERROR_EXIST_TAG, nil)
+		AppG.Response(http.StatusOK, errors.ERROR_NOT_EXIST_TAG, nil)
 		return
 	}
 	err = tagService.Edit()
@@ -128,7 +126,7 @@ func DeleteTag(c *gin.Context) {
 	appG := app.Gin{c}
 	valid := validation.Validation{}
 	valid.Min(id, 1, "id").Message("ID必须大于0")
-	if ! valid.HasErrors() {
+	if !valid.HasErrors() {
 		app.MarkErrors(valid.Errors)
 		appG.Response(http.StatusOK, errors.INVALID_PARAMS, nil)
 		return
@@ -136,12 +134,12 @@ func DeleteTag(c *gin.Context) {
 	tagService := tag_service.Tag{ID: id}
 	exists, err := tagService.ExistByID()
 	if err != nil {
-		appG.Response(http.StatusOK, e.ERROR_EXIST_TAG_FAIL, nil)
+		appG.Response(http.StatusOK, errors.ERROR_EXIST_TAG_FAIL, nil)
 		return
 	}
 
 	if !exists {
-		appG.Response(http.StatusOK, e.ERROR_NOT_EXIST_TAG, nil)
+		appG.Response(http.StatusOK, errors.ERROR_NOT_EXIST_TAG, nil)
 		return
 	}
 	if err := tagService.Delete(); err != nil {
@@ -187,7 +185,7 @@ func ImportTag(c *gin.Context) {
 	file, _, err := c.Request.FormFile("file")
 	if err != nil {
 		logging.Warn(err)
-		appG.Response(http.StatusOK, e.ERROR, nil)
+		appG.Response(http.StatusOK, errors.ERROR, nil)
 		return
 	}
 
@@ -195,9 +193,9 @@ func ImportTag(c *gin.Context) {
 	err = tagService.Import(file)
 	if err != nil {
 		logging.Warn(err)
-		appG.Response(http.StatusOK, e.ERROR_IMPORT_TAG_FAIL, nil)
+		appG.Response(http.StatusOK, errors.ERROR_IMPORT_TAG_FAIL, nil)
 		return
 	}
 
-	appG.Response(http.StatusOK, e.SUCCESS, nil)
+	appG.Response(http.StatusOK, errors.SUCCESS, nil)
 }

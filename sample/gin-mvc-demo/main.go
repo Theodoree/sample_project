@@ -1,15 +1,15 @@
 package main
 
 import (
-	"github.com/fvbock/endless"
 	"fmt"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/models"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/gredis"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/routers"
+	"github.com/fvbock/endless"
 	"log"
 	"syscall"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/models"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/routers"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/gredis"
 )
 
 func main() {

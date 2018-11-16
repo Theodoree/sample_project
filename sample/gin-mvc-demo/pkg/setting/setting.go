@@ -22,8 +22,9 @@ type App struct {
 	TimeFormat     string
 	PrefixUrl      string
 	ExportSavePath string
+	QrCodeSavePath string
+	FontSavePath   string
 }
-
 
 var AppSetting = &App{}
 

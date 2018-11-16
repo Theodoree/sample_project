@@ -1,13 +1,13 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/astaxie/beego/validation"
+	"github.com/gin-gonic/gin"
 
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/errors"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/models"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/util"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/app"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/errors"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/util"
 )
 
 type auth struct {
@@ -32,7 +32,7 @@ func GetAuth(c *gin.Context) {
 		return
 	}
 
-	isExist := models.CheckAuth(username, password) //检测账户是否合法
+	isExist, err := models.CheckAuth(username, password) //检测账户是否合法
 	if !isExist {
 		appG.Response(errors.SUCCESS, errors.ERROR_AUTH, data)
 		return

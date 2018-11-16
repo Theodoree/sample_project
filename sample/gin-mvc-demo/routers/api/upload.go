@@ -1,12 +1,12 @@
 package api
 
 import (
-	"net/http"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/app"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/errors"
-	"github.com/gin-gonic/gin"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/upload"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/app"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func UploadImage(c *gin.Context) {
@@ -30,7 +30,7 @@ func UploadImage(c *gin.Context) {
 	savePath := upload.GetImagePath()                //访问地址
 
 	src := fullPath + imageName
-	if ! upload.CheckImageExt(imageName) || ! upload.CheckImageSize(file) { //检查后缀和大小
+	if !upload.CheckImageExt(imageName) || !upload.CheckImageSize(file) { //检查后缀和大小
 		AppG.Response(http.StatusOK, errors.ERROR_UPLOAD_CHECK_IMAGE_FORMAT, data)
 		return
 	}

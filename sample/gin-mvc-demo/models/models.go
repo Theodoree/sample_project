@@ -1,26 +1,25 @@
 package models
 
 import (
-	_ `github.com/jinzhu/gorm/dialects/mysql`
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"time"
 )
-
 
 var db *gorm.DB
 
 type Model struct {
-	ID int `gorm:"primary_key" json:"id"`
-	CreatedOn string `json:"created_on"`
+	ID         int    `gorm:"primary_key" json:"id"`
+	CreatedOn  string `json:"created_on"`
 	ModifiedOn string `json:"modified_on"`
 }
 
 func Setup() {
 	var (
-		err error
+		err                                               error
 		dbType, dbName, user, password, host, tablePrefix string
 	)
 	dbType = setting.DatabaseSetting.Type
@@ -39,11 +38,11 @@ func Setup() {
 	if err != nil {
 		logging.Info(err)
 	}
-	gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
-		return tablePrefix + defaultTableName;
+	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+		return tablePrefix + defaultTableName
 	}
 	db.SingularTable(true)
-	db.DB().SetMaxIdleConns(10) //最多操作句柄
+	db.DB().SetMaxIdleConns(10)  //最多操作句柄
 	db.DB().SetMaxOpenConns(100) //最多打开连接数
 	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
 	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)

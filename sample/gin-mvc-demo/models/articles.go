@@ -38,6 +38,7 @@ func GetArticleTotal(maps interface{}) (int, error) {
 
 	return count, nil
 }
+
 /*Preload 它会执行两条SQL，分别是
 SELECT * FROM blog_articles;
 SELECT * FROM blog_tag WHERE id IN (1,2,3,4);*/
@@ -51,7 +52,6 @@ func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error
 	return articles, nil
 }
 
-
 func GetArticle(id int) (*Article, error) {
 	var article Article
 	err := db.Where("id = ? AND deleted_on = ? ", id, 0).First(&article).Related(&article.Tag).Error
@@ -61,6 +61,7 @@ func GetArticle(id int) (*Article, error) {
 
 	return &article, nil
 }
+
 //更新
 func EditArticle(id int, data interface{}) error {
 	if err := db.Model(&Article{}).Where("id = ? AND deleted_on = ? ", id, 0).Updates(data).Error; err != nil {
@@ -73,12 +74,12 @@ func EditArticle(id int, data interface{}) error {
 //增加
 func AddArticle(data map[string]interface{}) error {
 	article := Article{
-		TagID:         data["tag_id"].(int),
-		Title:         data["title"].(string),
-		Desc:          data["desc"].(string),
-		Content:       data["content"].(string),
-		CreatedBy:     data["created_by"].(string),
-		State:         data["state"].(int),
+		TagID:     data["tag_id"].(int),
+		Title:     data["title"].(string),
+		Desc:      data["desc"].(string),
+		Content:   data["content"].(string),
+		CreatedBy: data["created_by"].(string),
+		State:     data["state"].(int),
 	}
 	if err := db.Create(&article).Error; err != nil {
 		return err
@@ -103,7 +104,6 @@ func CleanAllArticle() error {
 
 	return nil
 }
-
 
 /*
 gorm所支持的回调方法：

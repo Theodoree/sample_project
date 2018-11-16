@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/file"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
 )
 
 func getLogFilePath() string { //获取log文件路径
@@ -15,7 +15,7 @@ func getLogFilePath() string { //获取log文件路径
 
 func getLogFileName() string {
 	return fmt.Sprintf("%s%s.%s",
-		setting.AppSetting.LogSaveName,		//		log时间戳.log
+		setting.AppSetting.LogSaveName, //		log时间戳.log
 		time.Now().Format(setting.AppSetting.TimeFormat),
 		setting.AppSetting.LogFileExt,
 	)
@@ -40,7 +40,7 @@ func openLogFile(fileName, filePath string) (*os.File, error) {
 		return nil, fmt.Errorf("file.IsNotExistMkDir src: %s, err: %v", src, err)
 	}
 
-	f, err := file.Open(src + fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := file.Open(src+fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return nil, fmt.Errorf("Fail to OpenFile :%v", err)
 	}

@@ -1,17 +1,22 @@
 package v1
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/Unknwon/com"
-	"github.com/astaxie/beego/validation"
-	"net/http"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/app"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/errors"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/qrcode"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/util"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/app"
-	"github.com/Theodoree/gin/go-gin-example/service/article_service"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/service/article_service"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/service/tag_service"
-	"github.com/Theodoree/gin/go-gin-example/pkg/e"
+	"github.com/Unknwon/com"
+	"github.com/astaxie/beego/validation"
+	"github.com/boombuler/barcode/qr"
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+const (
+	QRCODE_URL = "https://github.com/EDDYCJY/blog#gin%E7%B3%BB%E5%88%97%E7%9B%AE%E5%BD%95"
 )
 
 // @Summary 获取单个文章
@@ -125,12 +130,12 @@ func AddArticle(c *gin.Context) {
 	tagService := tag_service.Tag{ID: TagId}
 	exists, err := tagService.ExistByID()
 	if err != nil {
-		AppG.Response(http.StatusOK, e.ERROR_EXIST_TAG_FAIL, nil)
+		AppG.Response(http.StatusOK, errors.ERROR_EXIST_TAG_FAIL, nil)
 		return
 	}
 
 	if !exists {
-		AppG.Response(http.StatusOK, e.ERROR_NOT_EXIST_TAG, nil)
+		AppG.Response(http.StatusOK, errors.ERROR_NOT_EXIST_TAG, nil)
 		return
 	}
 	articleService := article_service.Article{
@@ -143,7 +148,7 @@ func AddArticle(c *gin.Context) {
 	}
 
 	if err := articleService.Add(); err != nil {
-		AppG.Response(http.StatusOK, e.ERROR_ADD_ARTICLE_FAIL, nil)
+		AppG.Response(http.StatusOK, errors.ERROR_ADD_ARTICLE_FAIL, nil)
 		return
 	}
 
@@ -237,10 +242,10 @@ func DeleteArticle(c *gin.Context) {
 		AppG.Response(http.StatusOK, errors.INVALID_PARAMS, nil)
 		return
 	}
-	articleService:=article_service.Article{
-		ID:id,
+	articleService := article_service.Article{
+		ID: id,
 	}
-	Exist,err:=articleService.ExistByID()
+	Exist, err := articleService.ExistByID()
 	if err != nil { //找不到文章
 		AppG.Response(http.StatusOK, errors.ERROR_CHECK_EXIST_ARTICLE_FAIL, nil)
 		return
@@ -250,10 +255,44 @@ func DeleteArticle(c *gin.Context) {
 		return
 	}
 
-	err =articleService.Delete()
-	if err !=nil{
-		AppG.Response(http.StatusOK,errors.ERROR_DELETE_ARTICLE_FAIL,nil)
+	err = articleService.Delete()
+	if err != nil {
+		AppG.Response(http.StatusOK, errors.ERROR_DELETE_ARTICLE_FAIL, nil)
 		return
 	}
 	AppG.Response(http.StatusOK, errors.SUCCESS, nil)
+}
+
+func GenerateArticlePoster(c *gin.Context) {
+	appG := app.Gin{C: c}
+
+	article := &article_service.Article{}
+	qr := qrcode.NewQrCode(QRCODE_URL, 300, 300, qr.M, qr.Auto)
+	posterName := article_service.GetPosterFlag() + "-" + qrcode.GetQrCodeFileName(qr.URL) + qr.GetQrCodeExt()
+	articlePoster := article_service.NewArticlePoster(posterName, article, qr)
+	articlePosterBgService := article_service.NewArticlePosterBg(
+		"bg.jpg",
+		articlePoster,
+		&article_service.Rect{
+			X0: 0,
+			Y0: 0,
+			X1: 550,
+			Y1: 700,
+		},
+		&article_service.Pt{
+			X: 125,
+			Y: 298,
+		},
+	)
+
+	_, filePath, err := articlePosterBgService.Generate()
+	if err != nil {
+		appG.Response(http.StatusOK, errors.ERROR_GEN_ARTICLE_POSTER_FAIL, nil)
+		return
+	}
+
+	appG.Response(http.StatusOK, errors.SUCCESS, map[string]string{
+		"poster_url":      qrcode.GetQrCodeFullUrl(posterName),
+		"poster_save_url": filePath + posterName,
+	})
 }

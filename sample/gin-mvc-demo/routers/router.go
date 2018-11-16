@@ -3,16 +3,17 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/routers/api/v1"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/routers/api"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/middleware/jwt"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
-	"github.com/swaggo/gin-swagger"
 	_ "github.com/Theodoree/sample_project/sample/gin-mvc-demo/docs"
-	"net/http"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/upload"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/middleware/jwt"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/export"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/qrcode"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/setting"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/upload"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/routers/api"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/routers/api/v1"
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+	"net/http"
 )
 
 func InitRouter() *gin.Engine {
@@ -25,7 +26,7 @@ func InitRouter() *gin.Engine {
 	r.GET("/auth", api.GetAuth)
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 	r.StaticFS("/export", http.Dir(export.GetExcelFullPath()))
-
+	r.StaticFS("/qrcode", http.Dir(qrcode.GetQrCodeFullPath()))
 	r.POST("/upload", api.UploadImage)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	apiv1 := r.Group("/api/v1")
@@ -40,9 +41,9 @@ func InitRouter() *gin.Engine {
 		//删除指定标签
 		apiv1.DELETE("/tags/:id", v1.DeleteTag)
 		//导出标签
-		r.POST("/tags/export", v1.ExportTag)
+		apiv1.POST("/tags/export", v1.ExportTag)
 		//导入标签
-		r.POST("/tags/import", v1.ImportTag)
+		apiv1.POST("/tags/import", v1.ImportTag)
 
 		//获取文章列表
 		apiv1.GET("/articles", v1.GetArticles)
@@ -54,7 +55,8 @@ func InitRouter() *gin.Engine {
 		apiv1.PUT("/articles/:id", v1.EditArticle)
 		//删除指定文章
 		apiv1.DELETE("/articles/:id", v1.DeleteArticle)
-
+		//二维码接口
+		apiv1.POST("/articles/poster/generate", v1.GenerateArticlePoster)
 	}
 	return r
 }

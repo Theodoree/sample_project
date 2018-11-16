@@ -10,10 +10,10 @@ import (
 	"github.com/tealeg/xlsx"
 
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/models"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/service/cache_service"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/export"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/gredis"
 	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/logging"
-	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/pkg/export"
+	"github.com/Theodoree/sample_project/sample/gin-mvc-demo/service/cache_service"
 )
 
 type Tag struct {
@@ -66,7 +66,7 @@ func (t *Tag) GetAll() ([]models.Tag, error) {
 		tags, cacheTags []models.Tag
 	)
 	cache := cache_service.Tag{
-		State: t.State,
+		State:    t.State,
 		PageNum:  t.PageNum,
 		PageSize: t.PageSize,
 	}
@@ -124,7 +124,7 @@ func (t *Tag) Export() (string, error) {
 		row = sheet.AddRow() //添加新一层
 		for _, value := range values {
 			cell = row.AddCell() //获取空格
-			cell.Value = value //添加value
+			cell.Value = value   //添加value
 		}
 	}
 
@@ -132,7 +132,7 @@ func (t *Tag) Export() (string, error) {
 	filename := "tags-" + Time + ".xlsx" //构建file Name
 
 	fullPath := export.GetExcelFullPath() + filename //构建文件路径
-	err = file.Save(fullPath) //储存
+	err = file.Save(fullPath)                        //储存
 	if err != nil {
 		return "", err
 	}

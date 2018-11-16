@@ -8,9 +8,9 @@ import (
 )
 
 type Article struct {
-	ID    int
-	TagID int
-	State int
+	ID       int
+	TagID    int
+	State    int
 	PageNum  int
 	PageSize int
 }
