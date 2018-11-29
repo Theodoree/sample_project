@@ -2,11 +2,79 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/PuerkitoBio/purell" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/PuerkitoBio/urlesc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/alecthomas/template" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/andybalholm/cascadia" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/boombuler/barcode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/bradfitz/gomemcache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/dchest/uniuri" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/fvbock/endless" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/ghodss/yaml" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/gin-contrib/sse" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/globalsign/mgo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/go-openapi/jsonpointer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/go-openapi/jsonreference" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/go-openapi/spec" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/go-openapi/swag" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/go-xorm/builder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/golang/lint" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/gorilla/context" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/gorilla/securecookie" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/gorilla/sessions" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/jinzhu/gorm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/jinzhu/inflection" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/kidstuff/mongostore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/kr/beanstalk" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/mailru/easyjson" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/memcachier/mc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/mohae/deepcopy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/moul/http2curl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/pkg/errors" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/robfig/cron" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/robfig/go-cache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/swaggo/gin-swagger" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/swaggo/swag" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/thedevsaddam/govalidator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/unrolled/render" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/utrack/gin-csrf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/xormplus/core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/github.com/xormplus/xorm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/build" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/crypto" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/debug" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/dep" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/mock" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/net" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/playground" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/review" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/sync" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/sys" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/text" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/time" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/tools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/golang.org/x/tour" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/gopkg.in/go-playground/validator.v8" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/gopkg.in/ini.v1" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/gopkg.in/mgo.v2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/Boos-zhiping/vendor/gopkg.in/yaml.v2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/PuerkitoBio/purell" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/PuerkitoBio/urlesc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/alecthomas/template" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/boombuler/barcode" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/bradfitz/gomemcache" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/dchest/uniuri" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/fvbock/endless" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/ghodss/yaml" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gin-contrib/sse" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gin-gonic/contrib" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/globalsign/mgo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/go-openapi/jsonpointer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/go-openapi/jsonreference" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/go-openapi/spec" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/go-openapi/swag" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/go-xorm/builder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/golang/lint" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gorilla/context" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gorilla/securecookie" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/gorilla/sessions" vcs="Git" />
@@ -14,10 +82,144 @@
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/jinzhu/inflection" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/kidstuff/mongostore" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/kr/beanstalk" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/mailru/easyjson" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/memcachier/mc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/mohae/deepcopy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/pkg/errors" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/robfig/cron" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/robfig/go-cache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/swaggo/gin-swagger" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/swaggo/swag" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/thedevsaddam/govalidator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/unrolled/render" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/utrack/gin-csrf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/xormplus/core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/github.com/xormplus/xorm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/build" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/crypto" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/debug" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/dep" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/mock" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/net" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/playground" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/review" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/sync" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/sys" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/text" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/time" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/tools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/golang.org/x/tour" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/gopkg.in/go-playground/validator.v8" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/gopkg.in/ini.v1" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/gopkg.in/mgo.v2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc-demo/vendor/gopkg.in/yaml.v2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/PuerkitoBio/purell" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/PuerkitoBio/urlesc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/alecthomas/template" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/boombuler/barcode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/bradfitz/gomemcache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/dchest/uniuri" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/fvbock/endless" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/ghodss/yaml" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/gin-contrib/sse" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/globalsign/mgo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/go-openapi/jsonpointer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/go-openapi/jsonreference" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/go-openapi/spec" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/go-openapi/swag" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/go-xorm/builder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/golang/lint" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/gorilla/context" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/gorilla/securecookie" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/gorilla/sessions" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/jinzhu/gorm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/jinzhu/inflection" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/kidstuff/mongostore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/kr/beanstalk" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/mailru/easyjson" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/memcachier/mc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/mohae/deepcopy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/pkg/errors" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/robfig/cron" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/robfig/go-cache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/swaggo/gin-swagger" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/swaggo/swag" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/thedevsaddam/govalidator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/unrolled/render" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/utrack/gin-csrf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/xormplus/core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/github.com/xormplus/xorm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/build" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/crypto" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/debug" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/dep" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/mock" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/net" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/playground" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/review" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/sync" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/sys" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/text" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/time" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/tools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/golang.org/x/tour" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/gopkg.in/go-playground/validator.v8" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/gopkg.in/ini.v1" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/gopkg.in/mgo.v2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/gin-mvc/vendor/gopkg.in/yaml.v2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/PuerkitoBio/purell" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/PuerkitoBio/urlesc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/alecthomas/template" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/boombuler/barcode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/bradfitz/gomemcache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/dchest/uniuri" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/fvbock/endless" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/ghodss/yaml" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/gin-contrib/sse" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/globalsign/mgo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/go-openapi/jsonpointer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/go-openapi/jsonreference" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/go-openapi/spec" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/go-openapi/swag" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/go-xorm/builder" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/golang/lint" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/gorilla/context" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/gorilla/securecookie" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/gorilla/sessions" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/jinzhu/gorm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/jinzhu/inflection" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/kidstuff/mongostore" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/kr/beanstalk" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/mailru/easyjson" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/memcachier/mc" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/mohae/deepcopy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/pkg/errors" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/robfig/cron" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/robfig/go-cache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/swaggo/gin-swagger" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/swaggo/swag" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/thedevsaddam/govalidator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/unrolled/render" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/utrack/gin-csrf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/xormplus/core" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/github.com/xormplus/xorm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/build" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/crypto" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/debug" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/dep" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/mock" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/net" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/playground" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/review" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/sync" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/sys" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/text" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/time" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/tools" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/golang.org/x/tour" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/gopkg.in/go-playground/validator.v8" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/gopkg.in/ini.v1" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/gopkg.in/mgo.v2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/sample/mvc/vendor/gopkg.in/yaml.v2" vcs="Git" />
   </component>
 </project>

@@ -66,14 +66,14 @@ func Setup() {
 
 	err = Cfg.Section("app").MapTo(AppSetting) //把数据解析给app对象
 	if err != nil {
-		log.Fatalf("Cfg.MapTo AppSetting err: %v", err)
+		log.Fatalf("Cfg.MapTo AppSetting errs: %v", err)
 	}
 
 	AppSetting.ImageMaxSize = AppSetting.ImageMaxSize * 1024 * 1024
 
 	err = Cfg.Section("server").MapTo(ServerSetting) //把数据解析给Server对象
 	if err != nil {
-		log.Fatalf("Cfg.MapTo ServerSetting err: %v", err)
+		log.Fatalf("Cfg.MapTo ServerSetting errs: %v", err)
 	}
 
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
@@ -81,11 +81,11 @@ func Setup() {
 
 	err = Cfg.Section("database").MapTo(DatabaseSetting) //解析给Database对象
 	if err != nil {
-		log.Fatalf("Cfg.MapTo DatabaseSetting err: %v", err)
+		log.Fatalf("Cfg.MapTo DatabaseSetting errs: %v", err)
 	}
 
 	err = Cfg.Section("redis").MapTo(RedisSetting) //解析给Database对象
 	if err != nil {
-		log.Fatalf("Cfg.MapTo RedisSetting err: %v", err)
+		log.Fatalf("Cfg.MapTo RedisSetting errs: %v", err)
 	}
 }

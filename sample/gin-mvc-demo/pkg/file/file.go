@@ -67,7 +67,7 @@ func Open(name string, flag int, perm os.FileMode) (*os.File, error) {
 func MustOpen(fileName, filePath string) (*os.File, error) {
 	dir, err := os.Getwd() //获取当前路径
 	if err != nil {
-		return nil, fmt.Errorf("os.Getwd err: %v", err)
+		return nil, fmt.Errorf("os.Getwd errs: %v", err)
 	}
 
 	src := dir + "/" + filePath  //获取文件路径
@@ -78,7 +78,7 @@ func MustOpen(fileName, filePath string) (*os.File, error) {
 
 	err = IsNotExistMkDir(src) //检查MKdir
 	if err != nil {
-		return nil, fmt.Errorf("file.IsNotExistMkDir src: %s, err: %v", src, err)
+		return nil, fmt.Errorf("file.IsNotExistMkDir src: %s, errs: %v", src, err)
 	}
 
 	f, err := Open(src+fileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644) //打开文件,如果不存在则创建

@@ -36,13 +36,13 @@ func Setup(){
 
 	err = Cfg.Section("Server").MapTo(ServerSetting) //把数据解析给app对象
 	if err != nil {
-		log.Fatalf("Cfg.MapTo ServerSetting err: %v", err)
+		log.Fatalf("Cfg.MapTo ServerSetting errs: %v", err)
 	}
 
 
 	err = Cfg.Section("Database").MapTo(DatabaseSetting) //把数据解析给app对象
 	if err != nil {
-		log.Fatalf("Cfg.MapTo DatabaseSetting err: %v", err)
+		log.Fatalf("Cfg.MapTo DatabaseSetting errs: %v", err)
 	}
 }
 

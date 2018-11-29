@@ -66,5 +66,4 @@ func updateTimeStampForCreateCallback(scope *gorm.Scope) {
 			}
 		}
 	}
-
 }

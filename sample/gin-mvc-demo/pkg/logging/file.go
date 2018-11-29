@@ -26,7 +26,7 @@ func getLogFileName() string {
 func openLogFile(fileName, filePath string) (*os.File, error) {
 	dir, err := os.Getwd()
 	if err != nil {
-		return nil, fmt.Errorf("os.Getwd err: %v", err)
+		return nil, fmt.Errorf("os.Getwd errs: %v", err)
 	}
 
 	src := dir + "/" + filePath
@@ -37,7 +37,7 @@ func openLogFile(fileName, filePath string) (*os.File, error) {
 
 	err = file.IsNotExistMkDir(src)
 	if err != nil {
-		return nil, fmt.Errorf("file.IsNotExistMkDir src: %s, err: %v", src, err)
+		return nil, fmt.Errorf("file.IsNotExistMkDir src: %s, errs: %v", src, err)
 	}
 
 	f, err := file.Open(src+fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)

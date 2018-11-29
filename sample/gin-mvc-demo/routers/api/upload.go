@@ -29,7 +29,7 @@ func UploadImage(c *gin.Context) {
 	fullPath := upload.GetImageFullPath()            // 返回本地储存位置
 	savePath := upload.GetImagePath()                //访问地址
 
-	src := fullPath + imageName
+	paht := fullPath + imageName
 	if !upload.CheckImageExt(imageName) || !upload.CheckImageSize(file) { //检查后缀和大小
 		AppG.Response(http.StatusOK, errors.ERROR_UPLOAD_CHECK_IMAGE_FORMAT, data)
 		return
@@ -40,7 +40,7 @@ func UploadImage(c *gin.Context) {
 		AppG.Response(http.StatusOK, errors.ERROR_UPLOAD_CHECK_IMAGE_FAIL, data)
 		return
 	}
-	if err := c.SaveUploadedFile(image, src); err != nil { //储存到本地
+	if err := c.SaveUploadedFile(image, paht); err != nil { //储存到本地
 		logging.Warn(err)
 		AppG.Response(http.StatusOK, errors.ERROR_UPLOAD_SAVE_IMAGE_FAIL, data)
 		return

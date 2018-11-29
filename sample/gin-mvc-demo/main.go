@@ -19,7 +19,7 @@ func main() {
 	gredis.Setup()
 	endless.DefaultReadTimeOut = setting.ServerSetting.ReadTimeout
 	endless.DefaultWriteTimeOut = setting.ServerSetting.WriteTimeout
-	endless.DefaultMaxHeaderBytes = 1 << 20
+	endless.DefaultMaxHeaderBytes = 2 << 20
 	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
 
 	server := endless.NewServer(endPoint, routers.InitRouter())
@@ -29,6 +29,6 @@ func main() {
 
 	err := server.ListenAndServe()
 	if err != nil {
-		log.Printf("Server err: %v", err)
+		log.Printf("Server errs: %v", err)
 	}
 }

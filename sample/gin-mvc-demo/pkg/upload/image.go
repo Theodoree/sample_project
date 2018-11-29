@@ -65,12 +65,12 @@ func CheckImageSize(f multipart.File) bool {
 func CheckImage(src string) error {
 	dir, err := os.Getwd() //获取当前路径
 	if err != nil {
-		return fmt.Errorf("os.Getwd err: %v", err)
+		return fmt.Errorf("os.Getwd errs: %v", err)
 	}
 	//检测文件夹是否存在
 	err = file.IsNotExistMkDir(dir + "/" + src)
 	if err != nil {
-		return fmt.Errorf("file.IsNotExistMkDir err: %v", err)
+		return fmt.Errorf("file.IsNotExistMkDir errs: %v", err)
 	}
 	//检查文件权限
 	perm := file.CheckPermission(src)
