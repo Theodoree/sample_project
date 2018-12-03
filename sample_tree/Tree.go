@@ -32,7 +32,7 @@ func NewNode(key, Value int) *Node {
 func (r *Node) insert(node *Node) {
 	current := r
 	for {
-		if current.Key <= node.Key {
+		if current.Key >= node.Key {
 			if current.Left == nil {
 				current.Left = node
 				node.Pre = current
@@ -95,6 +95,22 @@ func (r *Node) Delete(key int) bool {
 	}
 
 	return false
+}
+
+func (r *Node) Min() *Node {
+	current := r
+	for current.Left != nil {
+		current = current.Left
+	}
+	return current
+}
+
+func (r *Node) Max() *Node {
+	current := r
+	for current.Right != nil {
+		current = current.Right
+	}
+	return current
 }
 func (r *Node) Println() {
 	DLR(r, 0)
@@ -168,5 +184,6 @@ func main() {
 		a := rand.Intn(i) + 20
 		Root.insert(NewNode(a, i))
 	}
+	Root.Println()
 
 }
