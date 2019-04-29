@@ -1,75 +1,118 @@
 package main
 
+import "fmt"
 
-//Manacher算法
+//Manacher算法 在字符串有序时,会退化成O^2
 
-/*
-char s[1000];
-char s_new[2000];
-int p[2000];
+var count int
 
-int Init()
-{
-    int len = strlen(s);
-    s_new[0] = '$';
-    s_new[1] = '#';
-    int j = 2;
+func GetString(s string) string {
+	var str string
 
-    for (int i = 0; i < len; i++)
-    {
-        s_new[j++] = s[i];
-        s_new[j++] = '#';
-    }
+	str += `$`
+	str += `#`
 
-    s_new[j] = '\0';  // 别忘了哦
-
-    return j;  // 返回 s_new 的长度
+	for i := 0; i < len(s); i++ {
+		str += string(s[i])
+		str += `#`
+	}
+	str += `\0`
+	return str
 }
 
-int Manacher()
-{
-    int len = Init();  // 取得新字符串长度并完成向 s_new 的转换
-    int max_len = -1;  // 最长回文长度
-
-    int id;
-    int mx = 0;
-
-    for (int i = 1; i < len; i++)
-    {
-        if (i < mx)
-            p[i] = min(p[2 * id - i], mx - i);  // 需搞清楚上面那张图含义, mx 和 2*id-i 的含义
-        else
-            p[i] = 1;
-
-        while (s_new[i - p[i]] == s_new[i + p[i]])  // 不需边界判断，因为左有'$',右有'\0'
-            p[i]++;
-
-        // 我们每走一步 i，都要和 mx 比较，我们希望 mx 尽可能的远，这样才能更有机会执行 if (i < mx)这句代码，从而提高效率
-        if (mx < i + p[i])
-        {
-            id = i;
-            mx = i + p[i];
-        }
-
-        max_len = max(max_len, p[i] - 1);
-    }
-
-    return max_len;
+func min(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
 }
 
-int main()
-{
-    while (printf("请输入字符串：\n"))
-    {
-        scanf("%s", s);
-        printf("最长回文长度为 %d\n\n", Manacher());
-    }
-    return 0;
+func longestPalindrome1(s string) string {
+	if s == "" {
+		return ""
+	}
+
+	str := GetString(s)
+	p := make([]int, len(str)*2)
+	var str2 string
+	var maxLenth int
+	var id, mx int
+	for i := 1; i < len(str); i++ {
+		count++
+		if i < mx {
+			p[i] = min(p[2*id-1], mx-1)
+		} else {
+			p[i] = 1
+		}
+		if i+p[i] < len(str)-1 {
+			for str[i-p[i]] == str[i+p[i]] {
+				count++
+				p[i]++
+			}
+		}
+		if mx < i+p[i] {
+			id = 1
+			mx = i + p[i]
+		}
+		if maxLenth < p[i]-1 {
+			maxLenth = p[i] - 1
+			array := str[i-p[i]+1 : i+p[i]]
+			var str1 string
+			for i := 0; i < len(array); i++ {
+				count++
+				if string(array[i]) != `#` && string(array[i]) != `$` {
+					str1 += string(array[i])
+				}
+			}
+			if len(str1) > len(str2) {
+				str2 = str1
+			}
+		}
+	}
+	return str2
 }
-*/
+
+func longestPalindrome(s string) string {
+	if len(s) < 2 {
+		return s
+	}
+	if len(s) > 1000 {
+		panic("超出1000字符")
+	}
+	begin, maxLen := 0, 1
+	for i := 0; i < len(s); {
+		count++
+		if len(s)-i <= maxLen/2 { //当
+			break
+		}
+
+		b, e := i, i
+		for e < len(s)-1 && s[e+1] == s[e] {
+			count++
+			e++
+		}
+		i = e + 1
+		for e < len(s)-1 && b > 0 && s[e+1] == s[b-1] {
+			count++
+			e++
+			b--
+		}
+		newLen := e + 1 - b
+		if newLen > maxLen {
+			begin = b
+			maxLen = newLen
+		}
+	}
+	return s[begin : begin+maxLen]
+}
+
 func main() {
-	/*
-	待写
-	*/
+	str:=`sadlaskldajskldjlqw;jdlwqdjas;dklasl;kdkl;asl;kdkl;asdklas'f'l;adsfkl;'adskl';fkl';asd'`
+	fmt.Println(longestPalindrome(str))
+	fmt.Println(count)
+
+	count = 0
+	fmt.Println(longestPalindrome1(str))
+	fmt.Println(count)
 
 }
