@@ -1,4 +1,4 @@
-package main
+package mysql
 
 /* 601. 体育馆的人流量
 

@@ -1,4 +1,4 @@
-package main
+package mysql
 
 /*
 176. 第二高的薪水

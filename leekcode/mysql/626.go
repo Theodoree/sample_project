@@ -1,4 +1,4 @@
-package main
+package mysql
 
 /*
 626. 换座位

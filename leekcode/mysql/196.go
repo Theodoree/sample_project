@@ -1,4 +1,4 @@
-package main
+package mysql
 
 /*
 删除重复的电子邮件

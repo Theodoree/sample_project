@@ -1,4 +1,4 @@
-package main
+package mysql
 
 /*
 178. 分数排名

@@ -1,4 +1,4 @@
-package main
+package mysql
 
 
 /* 184 部门工资最高的员工

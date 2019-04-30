@@ -1,4 +1,4 @@
-package main
+package mysql
 
 /*
 181. 超过经理收入的员工

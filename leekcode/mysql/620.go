@@ -1,4 +1,4 @@
-package main
+package mysql
 
 /*
 620. 有趣的电影

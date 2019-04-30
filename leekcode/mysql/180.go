@@ -1,4 +1,4 @@
-package main
+package mysql
 
 /*
 . 连续出现的数字

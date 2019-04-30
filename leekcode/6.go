@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"strings"
+)
+
 //6. Z 字形变换
 
 /*
@@ -13,17 +18,68 @@ E C   I H   N
 T     S     G
 */
 
-func convert(s string, numRows int) string {
-	/*
-	LEETCODEISHIRING
-	LEET
+func convert1(s string, numRows int) string {
+	var res string
+	d := 2*numRows - 2
+	if d == 0 {
+		return s
+	}
 
-	CODEISHI
+	for i := 0; i < numRows; i++ {
+		if i == 0 || i == numRows-1 {
+			for j := i; j < len(s); j += d {
+				res += string(s[j])
+			}
+		} else {
+			k2 := 2*numRows - i - 2
+			for k1 := i; k1 < len(s) || k2 < len(s); {
+				if k1 < len(s) {
+					res += string(s[k1]);
+				}
+				if k2 < len(s) {
+					res += string(s[k2]);
+				}
 
-	RING
-	*/
-	//first:=s[:numRows-1] //LEET
-	//end:=s[len(s)-numRows-1:] //RING
-	return ""
+				k1 += d
+				k2 += d
+			}
+		}
+	}
+	return res
 }
 
+
+func convert(s string, numRows int) string {
+	if numRows <= 1 || numRows >= len(s) {
+		return s
+	}
+	var str = make([]string, numRows)
+	i, up := -1, true
+	for k, v := range s {
+		if i >= numRows-1 {
+			up = false
+		}
+
+		if i <= 0 {
+			up = true
+		}
+
+		if up { //
+			i++
+		} else {
+			i--
+		}
+		fmt.Printf("i=%d key= %d str=%s \n",i,k,string(v))
+		str[i] += string(v)
+	}
+	fmt.Println("0 ",str[0])
+	fmt.Println("1 ",str[1])
+	fmt.Println("2 ",str[2])
+	fmt.Println(strings.Join(str, ""))
+  	return strings.Join(str, "")
+}
+
+func main(){
+
+	convert(`LCIRETOESIIGEDHNSJHDKVJC`,3)
+}
