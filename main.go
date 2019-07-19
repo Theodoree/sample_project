@@ -1,6 +1,8 @@
 package main
 
-
+import (
+    "sync"
+)
 
 /*
 char s[1000];
@@ -67,3 +69,65 @@ return 0;
 }
 
 */
+
+type Number struct {
+    Id int
+}
+
+func main() {
+
+    f :=sync.Map{}
+    for i := 0; i < 10; i++ {
+        number := &Number{Id: i}
+        f.Store(i,number)
+    }
+
+    var wg sync.WaitGroup
+    parallelChan := make(chan struct{}, 5)
+    for i := 0; i < 1000; i++ {
+
+        parallelChan <- struct{}{}
+        wg.Add(1)
+        go func(i int) {
+            defer func() {
+                <-parallelChan
+                wg.Done()
+            }()
+
+            ok := getBool(i)
+            if ok {
+                val,ok:=f.Load(i)
+                if ok {
+                    number := val.(*Number)
+                    number.Id++
+                    f.Store(i, number)
+                }
+            }
+        }(i % 10)
+
+    }
+    wg.Wait()
+
+}
+var boolMap = map[int]bool{
+    1: true,
+    2: true,
+    3: true,
+    4: true,
+    5: true,
+    6: true,
+    7: true,
+    8: true,
+    9: true,
+    0: true,
+}
+
+var lock sync.RWMutex
+func getBool(i int) bool {
+    lock.Lock()
+
+    bl := boolMap[i]
+    boolMap[i] = !bl
+    lock.Unlock()
+    return bl
+}
