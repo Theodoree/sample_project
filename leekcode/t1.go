@@ -2,6 +2,8 @@ package main
 
 import (
     "fmt"
+    "sort"
+    "time"
 )
 
 func hasGroupsSizeX(deck []int) bool {
@@ -114,26 +116,6 @@ func numMagicSquaresInside(grid [][]int) int {
     return cnt
 }
 
-func findUnsortedSubarray(nums []int) int {
-
-    var left, right int
-    right = len(nums) - 1
-
-    for left+1 < len(nums) && nums[left] <= nums[left+1] {
-        left++
-    }
-
-    for right-1 >= 0 && nums[right-1] < nums[right] {
-        right--
-    }
-
-    if left == len(nums)-1 {
-        return 0
-    }
-
-    return right - left + 1
-}
-
 /*
 849. 到最近的人的最大距离
 
@@ -222,7 +204,6 @@ func maximumProduct(nums []int) int {
 
     }
 
-
     if secondmin < 0 && min < 0 {
         secondmin *= -1
         min *= -1
@@ -237,58 +218,167 @@ func maximumProduct(nums []int) int {
         sum *= two
     }
     /*-983 978 960 930 -925 923 -905*/
-    fmt.Println(one,two,third)
-    fmt.Println(one*two*third)
+    fmt.Println(one, two, third)
+    fmt.Println(one * two * third)
     if third != -1e4 {
         sum *= third
     }
     return sum
 }
+
+/*
+697. 数组的度
+
+给定一个非空且只包含非负数的整数数组 nums, 数组的度的定义是指数组里任一元素出现频数的最大值。
+
+你的任务是找到与 nums 拥有相同大小的度的最短连续子数组，返回其长度。
+
+示例 1:
+
+输入: [1, 2, 2, 3, 1]
+输出: 2
+解释:
+输入数组的度是2，因为元素1和2的出现频数最大，均为2.
+连续子数组里面拥有相同度的有如下所示:
+[1, 2, 2, 3, 1], [1, 2, 2, 3], [2, 2, 3, 1], [1, 2, 2], [2, 2, 3], [2, 2]
+最短连续子数组[2, 2]的长度为2，所以返回2.
+*/
+
+func findShortestSubArray(nums []int) int {
+    return 0
+}
+
+/*
+888. 公平的糖果交换
+
+爱丽丝和鲍勃有不同大小的糖果棒：A[i] 是爱丽丝拥有的第 i 块糖的大小，B[j] 是鲍勃拥有的第 j 块糖的大小。
+
+因为他们是朋友，所以他们想交换一个糖果棒，这样交换后，他们都有相同的糖果总量。（一个人拥有的糖果总量是他们拥有的糖果棒大小的总和。）
+
+返回一个整数数组 ans，其中 ans[0] 是爱丽丝必须交换的糖果棒的大小，ans[1] 是 Bob 必须交换的糖果棒的大小。
+
+如果有多个答案，你可以返回其中任何一个。保证答案存在。
+*/
+func fairCandySwap(A []int, B []int) []int {
+
+    sort.Ints(A)
+    sort.Ints(B)
+
+    var maxByAlice, maxByBob int
+    for _, v := range A {
+        maxByAlice += v
+    }
+    for _, v := range B {
+        maxByBob += v
+    }
+    var aliceIndex, BobIndex int
+    BobIndex = len(B) - 1
+
+    for {
+
+        resultByAlice := maxByAlice - A[aliceIndex] + B[BobIndex]
+        resultByBob := maxByBob + A[aliceIndex] - B[BobIndex]
+
+        if resultByAlice == resultByBob {
+            return []int{A[aliceIndex], B[BobIndex]}
+        }
+
+        if len(A)-1 <= aliceIndex && BobIndex <= 0 {
+            break
+        }
+
+        fmt.Println(resultByAlice, resultByBob, BobIndex)
+        time.Sleep(time.Second)
+        if resultByAlice < resultByBob {
+            if BobIndex >= 0 {
+                BobIndex--
+            }
+        } else {
+            if aliceIndex < len(A)-1 {
+                aliceIndex++
+            }
+        }
+
+    }
+
+    return nil
+}
+
+func findUnsortedSubarray(nums []int) int {
+
+    var left, right int
+    right = len(nums) - 1
+
+
+    for left+1 < len(nums) && nums[left] <= nums[left+1] {
+        left++
+    }
+    for right-1 >= 0 && nums[right-1] < nums[right]  {
+        right--
+    }
+
+
+
+    if left == len(nums)-1 {
+        return 0
+    }
+
+    return right - left + 1
+}
+
 func main() {
 
+    v := []int{1, 2, 3, 4}
+    fmt.Println(findUnsortedSubarray(v))
+    f := []int{1, 2, 3, 3, 3}
+    fmt.Println(findUnsortedSubarray(f))
+    f = []int{2, 6, 4, 8, 10, 9, 15}
+    fmt.Println(findUnsortedSubarray(f))
+    f = []int{1, 3, 2, 2, 2}
+    fmt.Println(findUnsortedSubarray(f))
+    f = []int{1, 3, 2, 3, 3}
+    fmt.Println(findUnsortedSubarray(f))
 
     /*
-    v := []int{903,606,48,-474,313,-672,872,-833,899,-629,558,-368,231,621,716,-41,-418,204,-1,883,431,810,452,-801,19,978,542,930,85,544,-784,-346,923,224,-533,-473,499,-439,-925,171,-53,247,373,898,700,406,-328,-468,95,-110,-102,-719,-983,776,412,-317,606,33,-584,-261,761,-351,-300,825,224,382,-410,335,187,880,-762,503,289,-690,117,-742,713,280,-781,447,227,-579,-845,-526,-403,-714,-154,960,-677,805,230,591,442,-458,-905,832,-285,511,536,-86}
+       a := []int{35, 17, 4, 24, 10}
+       b := []int{63, 21}
+       fmt.Println(fairCandySwap(a, b))
+
+       /*
+          v := []int{903,606,48,-474,313,-672,872,-833,899,-629,558,-368,231,621,716,-41,-418,204,-1,883,431,810,452,-801,19,978,542,930,85,544,-784,-346,923,224,-533,-473,499,-439,-925,171,-53,247,373,898,700,406,-328,-468,95,-110,-102,-719,-983,776,412,-317,606,33,-584,-261,761,-351,-300,825,224,382,-410,335,187,880,-762,503,289,-690,117,-742,713,280,-781,447,227,-579,-845,-526,-403,-714,-154,960,-677,805,230,591,442,-458,-905,832,-285,511,536,-86}
 
 
-    fmt.Println(maximumProduct(v))
-    /*
-       v := []int{1, 2, 3, 4}
-       fmt.Println(findUnsortedSubarray(v))
-       f := []int{1, 2, 3, 3, 3}
-       fmt.Println(findUnsortedSubarray(f))
-       f = []int{2, 6, 4, 8, 10, 9, 15}
-       fmt.Println(findUnsortedSubarray(f))
-       f = []int{1,3,2,2,2}
-       fmt.Println(findUnsortedSubarray(f))
+          fmt.Println(maximumProduct(v))
+          /*
 
-          v := [][]int{
-              {4, 3, 8, 4},
-              {9, 5, 1, 9},
-              {2, 7, 6, 2},}
-          fmt.Println(numMagicSquaresInside(v))
 
-             v := []int{4, 2, 3}
-             f := []int{3, 4, 2, 3}
-             fmt.Println(checkPossibility(v))
-             fmt.Println(checkPossibility(f))
-                fmt.Println(hasGroupsSizeX([]int{
-                //    0,0,0,0,
-                //    0,0,0,0,
-                //    0,0,0,0,
-                //    0,0,
-                //    1,1,1,1,
-                //    1,1,
-                //    2,2,2,2,
-                //    2,2,
-                //    3,3,3,3,
-                //    3,3,3,3
-                //    ,3,3,3,3,
-                //    4,4,
-                //    5,5,5,5,
-                //    6,6,
-                //    7,7,
-                //    8,8}))
+                v := [][]int{
+                    {4, 3, 8, 4},
+                    {9, 5, 1, 9},
+                    {2, 7, 6, 2},}
+                fmt.Println(numMagicSquaresInside(v))
+
+                   v := []int{4, 2, 3}
+                   f := []int{3, 4, 2, 3}
+                   fmt.Println(checkPossibility(v))
+                   fmt.Println(checkPossibility(f))
+                      fmt.Println(hasGroupsSizeX([]int{
+                      //    0,0,0,0,
+                      //    0,0,0,0,
+                      //    0,0,0,0,
+                      //    0,0,
+                      //    1,1,1,1,
+                      //    1,1,
+                      //    2,2,2,2,
+                      //    2,2,
+                      //    3,3,3,3,
+                      //    3,3,3,3
+                      //    ,3,3,3,3,
+                      //    4,4,
+                      //    5,5,5,5,
+                      //    6,6,
+                      //    7,7,
+                      //    8,8}))
     */
 
 }
