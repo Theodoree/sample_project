@@ -159,13 +159,14 @@ func increasingTriplet(nums []int) bool {
 
 /* 你想要的O(1) */
 
+/*
 var filterMap = map[byte]int{
-    'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5,
-    'F': 6, 'G': 7, 'H': 8, 'I': 9, 'J': 10,
-    'K': 11, 'L': 12, 'M': 13, 'N': 14, 'O': 15,
-    'P': 16, 'Q': 17, 'R': 18, 'S': 19, 'T': 20,
-    'U': 21, 'V': 22, 'W': 23, 'X': 24, 'Y': 25,
-    'Z': 26,
+   'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5,
+   'F': 6, 'G': 7, 'H': 8, 'I': 9, 'J': 10,
+   'K': 11, 'L': 12, 'M': 13, 'N': 14, 'O': 15,
+   'P': 16, 'Q': 17, 'R': 18, 'S': 19, 'T': 20,
+   'U': 21, 'V': 22, 'W': 23, 'X': 24, 'Y': 25,
+   'Z': 26,
 }
 
 func titleToNumber(s string) int {
@@ -184,25 +185,26 @@ func titleToNumber(s string) int {
     }
     return sum
 }
+*/
 
 func fractionToDecimal(numerator int, denominator int) string {
 
     n := float64(numerator)
     d := float64(denominator)
     var result string
-    if n/d >0{
+    if n/d > 0 {
 
-        result = fmt.Sprintf("%.2f",n/d)
+        result = fmt.Sprintf("%.2f", n/d)
 
     }
-
+    return result
 
 }
 
 func main() {
     //703
-    fmt.Println(titleToNumber(`AAA`))
-    fmt.Println(titleToNumber(`ZY`))
+    //fmt.Println(titleToNumber(`AAA`))
+    //fmt.Println(titleToNumber(`ZY`))
 
     //fmt.Println(increasingTriplet([]int{5, 1, 5, 5, 2, 5, 4}))
     //fmt.Println(increasingTriplet([]int{5, 4, 3, 2, 1}))
