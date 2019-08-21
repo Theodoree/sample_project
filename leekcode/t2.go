@@ -161,11 +161,7 @@ func toHex(num int) string {
     return ""
 }
 
-type TreeNode struct {
-    Val   int
-    Left  *TreeNode
-    Right *TreeNode
-}
+
 
 func isCousins(root *TreeNode, x int, y int) bool {
     var result [][]int
