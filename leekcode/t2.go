@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 /*
 188. 买卖股票的最佳时机 IV
 
@@ -163,72 +161,7 @@ func toHex(num int) string {
 
 
 
-func isCousins(root *TreeNode, x int, y int) bool {
-    var result [][]int
-    IsCousins(root, root, 1, x, y, &result)
-    var left, right bool
-    if len(result) > 0 {
-
-        for _, v := range result[len(result)-1] {
-
-            if v == x {
-                left = true
-            }
-
-            if v == y {
-                right = true
-            }
-
-            if left == true && right == true {
-                return true
-            }
-
-        }
-    }
-
-    return left == true && right == true
-
-}
-
-func IsCousins(root *TreeNode, Parent *TreeNode, depth, x, y int, result *[][]int) {
-
-    if root == nil {
-        return
-    }
-
-    if len(*result) <= depth-1 {
-        *result = append(*result, []int{})
-    }
-    current := *result
-
-    if Parent.Left != nil && Parent.Right != nil {
-        if !((Parent.Left.Val == x && Parent.Right.Val == y) || (Parent.Right.Val == x && Parent.Left.Val == y)) {
-            current[depth-1] = append(current[depth-1], root.Val)
-        }
-    } else {
-        current[depth-1] = append(current[depth-1], root.Val)
-    }
-
-    if root.Val == x || root.Val == y {
-        return
-    }
-
-    IsCousins(root.Left, root, depth+1, x, y, result)
-    IsCousins(root.Right, root, depth+1, x, y, result)
-
-}
 
 func main() {
 
-    r1 := &TreeNode{Val: 1}
-    r2 := &TreeNode{Val: 2}
-    r3 := &TreeNode{Val: 3}
-    r4 := &TreeNode{Val: 4}
-    r5 := &TreeNode{Val: 5}
-
-    r1.Left = r2
-    r2.Right = r4
-    r1.Right = r3
-    r3.Right = r5
-    fmt.Println(isCousins(r1, 5, 4))
 }

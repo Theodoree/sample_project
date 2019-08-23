@@ -8,15 +8,23 @@ import (
 )
 
 
+
 func main() {
 
+    v := []int{0, 0, 0, null, 1, null, 1, 0, 1, null, null, null, null, 1}
+    t, _ := CreateTree(v)
+
+    fmt.Println(sumRootToLeaf(t))
+    // PrintTree(t, "DLR", nil)
 
 }
 
 const (
-    DLR = "DLR"
-    LDR = "LDR"
-    LRD = "LRD"
+    DLR   = "DLR"
+    LDR   = "LDR"
+    LRD   = "LRD"
+    LEVEL = "LEVEL"
+    null  = 0x7777777
 )
 
 type TreeNode struct {
@@ -41,12 +49,12 @@ func CreateTree(b []int) (*TreeNode, []*TreeNode) {
     v[0] = root
     for i := 1; i <= len(b)/2; i++ {
 
-        if b[i*2-1] != 0 {
+        if b[i*2-1] != null {
             current.Left = &TreeNode{Val: b[i*2-1]}
             v[index1] = current.Left
             index1++
         }
-        if i*2 < len(b) && b[i*2] != 0 {
+        if i*2 < len(b) && b[i*2] != null {
             current.Right = &TreeNode{Val: b[i*2]}
             v[index1] = current.Right
             index1++
@@ -56,6 +64,22 @@ func CreateTree(b []int) (*TreeNode, []*TreeNode) {
     }
 
     return root, v
+
+}
+func LevelTree(root *TreeNode, result *[][]int, depth int) {
+
+    if root == nil {
+        return
+    }
+
+    if len(*result) <= depth {
+        *result = append(*result, []int{})
+    }
+
+    k := *result
+    k[depth] = append(k[depth], root.Val)
+    LevelTree(root.Left, result, depth+1)
+    LevelTree(root.Right, result, depth+1)
 
 }
 
@@ -83,7 +107,7 @@ func PrintTree(root *TreeNode, Type string, array *[]int) {
         PrintTree(root.Right, Type, array)
     case "LRD":
         PrintTree(root.Left, Type, array)
-        PrintTree(root.Right, Type, array)
+        PrintTree(root.Right, Type, array, )
         if array != nil {
             *array = append(*array, root.Val)
         } else {
