@@ -1,5 +1,8 @@
 package _00_499
 
+import (
+    "fmt"
+)
 
 /*
 401. 二进制手表
@@ -29,16 +32,15 @@ package _00_499
 
 func readBinaryWatch(num int) []string {
 
-
     var result []string
     switch num {
     case 0:
-        return  append(result,"0:00")
+        return append(result, "0:00")
 
     }
     for i := 0; i < 12; i++ {
         for j := 0; j < 60; j++ {
-            if Binary(i)+Binary(j) == num { //计算二进制中1的个数
+            if Binary(i)+Binary(j) == num { // 计算二进制中1的个数
                 if j < 10 {
                     result = append(result, fmt.Sprintf("%d:0%d", i, j))
                 } else {

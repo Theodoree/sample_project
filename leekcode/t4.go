@@ -1,21 +1,60 @@
 package main
 
 import (
+    "encoding/json"
     "fmt"
+    "github.com/360EntSecGroup-Skylar/excelize"
     "math/rand"
     "sort"
+    "strings"
     "time"
 )
 
-
+type Sku struct {
+    Title    string `json:"title"`
+    OriPrice string `json:"ori_price"`
+    Price    string `json:"price"`
+    UnionUrl string `json:"union_url"`
+    Img      string `json:"img"`
+}
 
 func main() {
 
-    v := []int{0, 0, 0, null, 1, null, 1, 0, 1, null, null, null, null, 1}
-    t, _ := CreateTree(v)
 
-    fmt.Println(sumRootToLeaf(t))
-    // PrintTree(t, "DLR", nil)
+
+}
+
+func readXlsx() {
+    xlsx, err := excelize.OpenFile("/Users/ted/Downloads/京东联盟部分高佣商品列表副本.xlsx")
+    if err != nil {
+        fmt.Println(err)
+        return
+    }
+    cell := xlsx.GetCellValue("Sheet1", "B2")
+    fmt.Println(cell)
+
+    var result []*Sku
+    rows := xlsx.GetRows("Sheet1")
+    for i := 1; i < len(rows); i++ {
+        row := rows[i]
+        price := strings.Split(row[2], `￥`)
+        if len(price) > 1 {
+            row[2] = price[1]
+        } else {
+            row[2] = price[0]
+        }
+
+        result = append(result, &Sku{
+            Title:    row[1],
+            OriPrice: row[2],
+            Price:    row[2],
+            UnionUrl: row[4],
+            Img:      row[3],
+        })
+    }
+
+    b, _ := json.Marshal(result)
+    fmt.Printf("%s", b)
 
 }
 
