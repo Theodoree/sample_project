@@ -1,6 +1,6 @@
 module github.com/Theodoree/sample_project
 
-go 1.12
+go 1.13
 
 require (
 	github.com/360EntSecGroup-Skylar/excelize v1.4.1
@@ -15,6 +15,7 @@ require (
 	github.com/moul/http2curl v1.0.0 // indirect
 	github.com/parnurzeal/gorequest v0.2.15
 	github.com/pkg/errors v0.8.1 // indirect
+	github.com/prometheus/tsdb v0.10.0 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 // indirect
 	github.com/ziutek/mymysql v1.5.4
 	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4

@@ -1,52 +1,47 @@
 package __99
 
 import (
-    "fmt"
+    "math"
     "sort"
 )
+/*
+16. 最接近的三数之和
 
-// 16.最接近的三数之和
+给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。返回这三个数的和。假定每组输入只存在唯一答案。
+
+例如，给定数组 nums = [-1，2，1，-4], 和 target = 1.
+
+与 target 最接近的三个数的和为 2. (-1 + 2 + 1 = 2).
+*/
 
 func threeSumClosest(nums []int, target int) int {
+
     sort.Ints(nums)
 
-    var sum int
-    var tmp int
+    var left,right int
+    closenum := nums[0] + nums[1] + nums[2]
     for i := 0; i < len(nums)-2; i++ {
-        for j := i+1; j < len(nums)-1; j++ {
-            tmp = nums[i] + nums[j] + nums[j+1]
-            if tmp == target {
-                return target
-            }
-            if tmp < target{
-                sum = tmp
-            }else{
-                sumA:=tmp - target
-                if sumA < 0 {
-                    sumA = sumA*-1+1
-                }
-                sumB:=sum - target
-                if sumB < 0 {
-                    sumB = sumB*-1+1
-                }
+        if nums[i]+nums[i+1] > target {
+            break
+        }
+        left = i + 1
+        right = len(nums) - 1
+        for left < right {
 
-                if sumA < sumB{
-                    return tmp
-                } else{
-                    return sum
-                }
+            threeSum := nums[i] + nums[left] + nums[right]
+            if math.Abs(float64(threeSum-target)) < math.Abs(float64(closenum-target)) {
+                closenum = threeSum
+            }
+
+            if threeSum > target {
+                right--
+            } else if threeSum < target {
+                left++
+            } else {
+                return threeSum
             }
         }
+
     }
-
-
-    return tmp
-}
-
-func main() {
-
-    f:=threeSumClosest([]int{-1,2,1,-4},1)
-    fmt.Println(f)
-    f = threeSumClosest([]int{1,1,1,1}, 0)
-    fmt.Println(f)
+    return closenum
 }

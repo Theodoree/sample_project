@@ -6,22 +6,117 @@ import (
     "github.com/360EntSecGroup-Skylar/excelize"
     "math/rand"
     "sort"
+    "strconv"
     "strings"
     "time"
 )
 
-type Sku struct {
-    Title    string `json:"title"`
-    OriPrice string `json:"ori_price"`
-    Price    string `json:"price"`
-    UnionUrl string `json:"union_url"`
-    Img      string `json:"img"`
+func lexicalOrder(n int) []int {
+
+    result := make([]string, n, n)
+
+    for i := 0; i < len(result); i++ {
+        result[i] = strconv.Itoa(i + 1)
+    }
+    sort.Slice(result, func(i, j int) bool {
+        return result[i] < result[j]
+    })
+
+    var re []int
+
+    for _, v := range result {
+        i, _ := strconv.Atoi(v)
+
+        re = append(re, i)
+    }
+    return re
+}
+
+/*
+328. 奇偶链表
+
+给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。
+
+请尝试使用原地算法完成。你的算法的空间复杂度应为 O(1)，时间复杂度应为 O(nodes)，nodes 为节点总数。
+
+示例 1:
+
+输入: 1->2->3->4->5->NULL
+输出: 1->3->5->2->4->NULL
+示例 2:
+
+输入: 2->1->3->5->6->4->7->NULL
+输出: 2->3->6->7->1->5->4->NULL
+说明:
+
+应当保持奇数节点和偶数节点的相对顺序。
+链表的第一个节点视为奇数节点，第二个节点视为偶数节点，以此类推。
+*/
+
+func oddEvenList(head *ListNode) *ListNode {
+
+    if head == nil || head.Next == nil || head.Next.Next == nil {
+        return head
+    }
+
+    var j, o *ListNode
+    var jcur, ocur *ListNode
+    var cnt int
+    cnt = 1
+    for head != nil {
+
+        if cnt%2 != 0 {
+            if jcur == nil {
+                j, jcur = head, head
+            } else {
+                jcur.Next = head
+                jcur = jcur.Next
+            }
+        } else {
+            if ocur == nil {
+                o, ocur = head, head
+            } else {
+                ocur.Next = head
+                ocur = ocur.Next
+            }
+        }
+        head = head.Next
+        cnt++
+    }
+
+    if jcur != nil {
+        jcur.Next = o
+        if ocur != nil {
+            ocur.Next = nil
+        }
+    }
+    fmt.Println(j)
+    return head
 }
 
 func main() {
 
+    n1 := 0b00101101
+    fmt.Println(n1)
 
+    /*
 
+       n1 := &ListNode{Val: 1}
+       n2 := &ListNode{Val: 2}
+       n3 := &ListNode{Val: 3}
+       n4 := &ListNode{Val: 4}
+       n5 := &ListNode{Val: 5}
+       n1.Next = n2
+       n2.Next = n3
+       n3.Next = n4
+       n4.Next = n5
+
+       n1 = oddEvenList(n1)
+       for n1 != nil {
+           fmt.Println(n1.Val)
+           n1 = n1.Next
+       }
+    */
 }
 
 func readXlsx() {
@@ -33,7 +128,7 @@ func readXlsx() {
     cell := xlsx.GetCellValue("Sheet1", "B2")
     fmt.Println(cell)
 
-    var result []*Sku
+    var result []interface{}
     rows := xlsx.GetRows("Sheet1")
     for i := 1; i < len(rows); i++ {
         row := rows[i]
@@ -44,13 +139,20 @@ func readXlsx() {
             row[2] = price[0]
         }
 
-        result = append(result, &Sku{
+        Sku := struct {
+            Title    string
+            OriPrice string
+            Price    string
+            UnionUrl string
+            Img      string
+        }{
             Title:    row[1],
             OriPrice: row[2],
             Price:    row[2],
             UnionUrl: row[4],
             Img:      row[3],
-        })
+        }
+        result = append(result, &Sku)
     }
 
     b, _ := json.Marshal(result)
@@ -66,6 +168,10 @@ const (
     null  = 0x7777777
 )
 
+type ListNode struct {
+    Val  int
+    Next *ListNode
+}
 type TreeNode struct {
     Val   int
     Left  *TreeNode
