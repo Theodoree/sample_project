@@ -11,132 +11,52 @@ import (
     "time"
 )
 
-func lexicalOrder(n int) []int {
 
-    result := make([]string, n, n)
 
-    for i := 0; i < len(result); i++ {
-        result[i] = strconv.Itoa(i + 1)
-    }
-    sort.Slice(result, func(i, j int) bool {
-        return result[i] < result[j]
-    })
-
-    var re []int
-
-    for _, v := range result {
-        i, _ := strconv.Atoi(v)
-
-        re = append(re, i)
-    }
-    return re
-}
-
-/*
-328. 奇偶链表
-
-给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。请注意，这里的奇数节点和偶数节点指的是节点编号的奇偶性，而不是节点的值的奇偶性。
-
-请尝试使用原地算法完成。你的算法的空间复杂度应为 O(1)，时间复杂度应为 O(nodes)，nodes 为节点总数。
-
-示例 1:
-
-输入: 1->2->3->4->5->NULL
-输出: 1->3->5->2->4->NULL
-示例 2:
-
-输入: 2->1->3->5->6->4->7->NULL
-输出: 2->3->6->7->1->5->4->NULL
-说明:
-
-应当保持奇数节点和偶数节点的相对顺序。
-链表的第一个节点视为奇数节点，第二个节点视为偶数节点，以此类推。
-*/
-
-func oddEvenList(head *ListNode) *ListNode {
-
-    if head == nil || head.Next == nil || head.Next.Next == nil {
-        return head
-    }
-
-    var j, o *ListNode
-    var jcur, ocur *ListNode
-    var cnt int
-    cnt = 1
-    for head != nil {
-
-        if cnt%2 != 0 {
-            if jcur == nil {
-                j, jcur = head, head
-            } else {
-                jcur.Next = head
-                jcur = jcur.Next
-            }
-        } else {
-            if ocur == nil {
-                o, ocur = head, head
-            } else {
-                ocur.Next = head
-                ocur = ocur.Next
-            }
-        }
-        head = head.Next
-        cnt++
-    }
-
-    if jcur != nil {
-        jcur.Next = o
-        if ocur != nil {
-            ocur.Next = nil
-        }
-    }
-    fmt.Println(j)
-    return head
-}
 
 func main() {
+    v := [][]int{{1, 2, 5},
+        {3, 2, 1}}
 
-    n1 := 0b00101101
-    fmt.Println(n1)
-
-    /*
-
-       n1 := &ListNode{Val: 1}
-       n2 := &ListNode{Val: 2}
-       n3 := &ListNode{Val: 3}
-       n4 := &ListNode{Val: 4}
-       n5 := &ListNode{Val: 5}
-       n1.Next = n2
-       n2.Next = n3
-       n3.Next = n4
-       n4.Next = n5
-
-       n1 = oddEvenList(n1)
-       for n1 != nil {
-           fmt.Println(n1.Val)
-           n1 = n1.Next
-       }
-    */
+    fmt.Println(minPathSum(v))
 }
 
 func readXlsx() {
-    xlsx, err := excelize.OpenFile("/Users/ted/Downloads/京东联盟部分高佣商品列表副本.xlsx")
+    xlsx, err := excelize.OpenFile("/Users/ted/Downloads/兰芝-微信直播商品-汇总.xlsx")
     if err != nil {
         fmt.Println(err)
         return
     }
-    cell := xlsx.GetCellValue("Sheet1", "B2")
-    fmt.Println(cell)
 
     var result []interface{}
-    rows := xlsx.GetRows("Sheet1")
+    rows := xlsx.GetRows("直播间选品")
+
+    fmt.Println(rows[0])
+    var unionIndex, titleIndex, priceIndex, imgIndex int
+
+    for k, v := range rows[0] {
+        switch v {
+        // case "sku_id":
+        //     skuIndex = k
+        case "title":
+            titleIndex = k
+        case "price":
+            priceIndex = k
+        case "img":
+            imgIndex = k
+        case "union_url":
+            unionIndex = k
+
+        }
+    }
+
     for i := 1; i < len(rows); i++ {
         row := rows[i]
-        price := strings.Split(row[2], `￥`)
+        price := strings.Split(row[priceIndex], `￥`)
         if len(price) > 1 {
-            row[2] = price[1]
+            row[priceIndex] = price[1]
         } else {
-            row[2] = price[0]
+            row[priceIndex] = price[0]
         }
 
         Sku := struct {
@@ -146,11 +66,11 @@ func readXlsx() {
             UnionUrl string
             Img      string
         }{
-            Title:    row[1],
-            OriPrice: row[2],
-            Price:    row[2],
-            UnionUrl: row[4],
-            Img:      row[3],
+            Title:    row[titleIndex],
+            OriPrice: row[priceIndex],
+            Price:    row[priceIndex],
+            UnionUrl: row[unionIndex],
+            Img:      row[imgIndex],
         }
         result = append(result, &Sku)
     }
@@ -295,5 +215,62 @@ func GetSlice(i int) []int {
     sort.Ints(result)
 
     return result
+
+}
+
+
+/*
+64. 最小路径和
+
+给定一个包含非负整数的 m x n 网格，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：每次只能向下或者向右移动一步。
+
+示例:
+
+输入:
+[
+  [1,3,1],
+  [1,5,1],
+  [4,2,1]
+]
+输出: 7
+解释: 因为路径 1→3→1→1→1 的总和最小。
+*/
+
+func minPathSum(grid [][]int) int {
+
+    if len(grid) == 0 {
+        return 0
+    }
+    m, n := len(grid), len(grid[0])
+    dp := make([]int, (m+n)*2)
+
+    dp[0] = grid[0][0]
+
+    for i:=0;i<len(grid);i++{
+
+
+    }
+
+    return 1000
+
+}
+
+func MinPathSum(grid [][]int, m, n, current int, val string, min *int) {
+    if m == len(grid)-1 && n == len(grid[0])-1 {
+        if current < *min {
+            *min = current
+        }
+        return
+    }
+
+    if m < len(grid)-1 {
+        MinPathSum(grid, m+1, n, current+grid[m+1][n], val+" "+strconv.Itoa(grid[m+1][n]), min)
+    }
+
+    if n < len(grid[0])-1 {
+        MinPathSum(grid, m, n+1, current+grid[m][n+1], val+" "+strconv.Itoa(grid[m][n+1]), min)
+    }
 
 }
