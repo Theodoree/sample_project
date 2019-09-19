@@ -2,133 +2,76 @@ package _00_799
 
 import "fmt"
 
-//哈希表设计
-type MyHashMap struct {
-    Head *node
-}
 
-type node struct {
-    Left  *node
-    Right *node
-    key   int
-    value int
+/*
+706. 设计哈希映射
+
+不使用任何内建的哈希表库设计一个哈希映射
+
+具体地说，你的设计应该包含以下的功能
+
+put(key, value)：向哈希映射中插入(键,值)的数值对。如果键对应的值已经存在，更新这个值。
+get(key)：返回给定的键所对应的值，如果映射中不包含这个键，返回-1。
+remove(key)：如果映射中存在这个键，删除这个数值对。
+
+示例：
+
+MyHashMap hashMap = new MyHashMap();
+hashMap.put(1, 1);
+hashMap.put(2, 2);
+hashMap.get(1);            // 返回 1
+hashMap.get(3);            // 返回 -1 (未找到)
+hashMap.put(2, 1);         // 更新已有的值
+hashMap.get(2);            // 返回 1
+hashMap.remove(2);         // 删除键为2的数据
+hashMap.get(2);            // 返回 -1 (未找到)
+
+注意：
+
+所有的值都在 [1, 1000000]的范围内。
+操作的总数目在[1, 10000]范围内。
+不要使用内建的哈希库。
+在真实的面试中遇到过这道题？
+*/
+type MyHashMap struct {
+    arr    []int
+    IsHave []bool
 }
 
 /** Initialize your data structure here. */
 func Constructor() MyHashMap {
-    return MyHashMap{}
+    return MyHashMap{arr: make([]int, 100000), IsHave: make([]bool, 100000)}
 }
 
 /** value will always be non-negative. */
 func (this *MyHashMap) Put(key int, value int) {
-    n := &node{key: key, value: value}
-    if this.Head == nil {
-        this.Head = n
-    } else {
-        this.Head.Insert(n)
-    }
-}
-
-func (n *node) Insert(t *node) {
-    current := n
-
-    for {
-
-        if current.key > t.key {
-            if current.Left != nil {
-                current = current.Left
-            } else {
-                current.Left = t
-                break
-            }
-        } else if current.key < t.key {
-            if current.Right != nil {
-                current = current.Right
-            } else {
-                current.Right = t
-                break
-            }
-        } else if current.key == t.key {
-            current.value = t.value
-            break
-        }
-    }
+    this.arr[key] = value
+    this.IsHave[key] = true
 }
 
 /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
 func (this *MyHashMap) Get(key int) int {
-    return this.Head.Find(key)
-
-}
-func (n *node) Find(key int) int {
-    current := n
-
-    for {
-        if current == nil {
-            return -1
-        }
-        if current.key > key {
-            current = current.Left
-        } else if current.key < key {
-            current = current.Right
-        } else if current.key == key {
-            return current.value
-        }
-
+    if this.IsHave[key] {
+        return this.arr[key]
     }
 
+    return -1
 }
 
 /** Removes the mapping of the specified value key if this map contains a mapping for the key */
 func (this *MyHashMap) Remove(key int) {
-    this.Head.Remove(key)
+    this.IsHave[key] = false
+    this.arr[key] = 0
 
 }
-func (r *node) Remove(target int) {
-    delete(r, target)
-}
-func delete(node *node, target int) *node {
-    if node == nil {
-        return nil
-    }
 
-    if node.key == target {
-        minNode, minNodeParent := min(node.Right)
-        minNodeParent.Left = nil
-        minNode.Left = node.Left
-        minNode.Right = node.Right
-
-        return minNode
-    }
-
-    if node.key > target {
-        node.Right = delete(node.Right, target)
-        fmt.Printf("%#v \n",node)
-
-        return node
-    }
-
-    if node.key < target {
-        node.Left = delete(node.Left, target)
-
-        return node
-    }
-
-    return nil
-}
-
-func min(n *node) (*node, *node) {
-    current := n
-    var parten *node
-    for {
-        if current.Left != nil {
-            parten = current
-            current = current.Left
-        } else {
-            return current, parten
-        }
-    }
-}
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Put(key,value);
+ * param_2 := obj.Get(key);
+ * obj.Remove(key);
+ */
 
 func main() {
     /*
