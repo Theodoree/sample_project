@@ -106,17 +106,11 @@ func hasGroupsSizeX(deck []int) bool {
     return true
 }
 
-type t struct {
-    Bytes []byte `json:"bytes"`
-}
+
 
 func main() {
     // val := []int{1,1,1,1,2,2,2,2,2,2}
     // fmt.Println(hasGroupsSizeX(val))
 
-    v := `{"bytes":"ztK6zcTjueLE6r7gwOsgCs7Sz+u6zcTj0Om2yLni0vVfXyAKamRfMTgyMTYwemZuIAp5ZWFocmFoeGVwaG9uIArIw8TjsLLIq7XEuNSxviAKamRfMTg4MzA5a2FnIApqZF83MTgyOTJiYWYxM2YwIApqZF9kYW5zNjM2IApqZF80M2U2NTcwYjUwMWU4IArdrceFgUaI+yAKvsWxpsGr19PW4CAKamRfMTg3MzQ0ZXVuIAoxMjO5rTYgCktIQ0MgCsL+08YgCnhpYW+yy7HGIAq9rcTPMdK71qa7qCAKwdi458auIApjaGVsc2Vhx/LNryAKamRfNGU5ZjlkYjU1MmMyOSAKztK6zcTjueLE6r7gwOsgCs7Sz+u6zcTj0Om2yLni0vVfXyAKamRfMTgyMTYwemZuIAp5ZWFocmFoeGVwaG9uIArIw8TjsLLIq7XEuNSxviAKamRfMTg4MzA5a2FnIApqZF83MTgyOTJiYWYxM2YwIApqZF9kYW5zNjM2IApqZF80M2U2NTcwYjUwMWU4IArdrceFgUaI+yAKvsWxpsGr19PW4CAKamRfMTg3MzQ0ZXVuIAoxMjO5rTYgCktIQ0MgCsL+08YgCnhpYW+yy7HGIAq9rcTPMdK71qa7qCAKwdi458auIApjaGVsc2Vhx/LNryAKamRfNGU5ZjlkYjU1MmMyOSAKztK6zcTjueLE6r7gwOsgCs7Sz+u6zcTj0Om2yLni0vVfXyAKamRfMTgyMTYwemZuIAp5ZWFocmFoeGVwaG9uIArIw8TjsLLIq7XEuNSxviAKamRfMTg4MzA5a2FnIApqZF83MTgyOTJiYWYxM2YwIApqZF9kYW5zNjM2IApqZF80M2U2NTcwYjUwMWU4IArdrceFgUaI+yAKvsWxpsGr19PW4CAKamRfMTg3MzQ0ZXVuIAoxMjO5rTYgCktIQ0MgCsL+08YgCnhpYW+yy7HGIAq9rcTPMdK71qa7qCAKwdi458auIApjaGVsc2Vhx/LNryAKamRfNGU5ZjlkYjU1MmMyOSAK"}`
 
-    var k *t
-    json.Unmarshal([]byte(v), &k)
-    fmt.Println(transcode.FromByteArray(k.Bytes).Decode("GBK").ToString())
 }
