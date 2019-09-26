@@ -154,3 +154,10 @@ func GetMin(nums ...int) int {
     }
     return Min
 }
+
+func Abs(num int) int {
+    if num < 0 {
+        return - num
+    }
+    return num
+}

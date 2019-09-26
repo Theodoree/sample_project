@@ -1,66 +1,22 @@
 package main
 
 /*
-381. O(1) 时间插入、删除和获取随机元素 - 允许重复
 
-设计一个支持在平均 时间复杂度 O(1) 下， 执行以下操作的数据结构。
+386. 字典序排数
 
-注意: 允许出现重复元素。
+给定一个整数 n, 返回从 1 到 n 的字典顺序。
 
-insert(val)：向集合中插入元素 val。
-remove(val)：当 val 存在时，从集合中移除一个 val。
-getRandom：从现有集合中随机获取一个元素。每个元素被返回的概率应该与其在集合中的数量呈线性相关。
-示例:
+例如，
 
-// 初始化一个空的集合。
-RandomizedCollection collection = new RandomizedCollection();
+给定 n =1 3，返回 [1,10,11,12,13,2,3,4,5,6,7,8,9] 。
 
-// 向集合中插入 1 。返回 true 表示集合不包含 1 。
-collection.insert(1);
-
-// 向集合中插入另一个 1 。返回 false 表示集合包含 1 。集合现在包含 [1,1] 。
-collection.insert(1);
-
-// 向集合中插入 2 ，返回 true 。集合现在包含 [1,1,2] 。
-collection.insert(2);
-
-// getRandom 应当有 2/3 的概率返回 1 ，1/3 的概率返回 2 。
-collection.getRandom();
-
-// 从集合中删除 1 ，返回 true 。集合现在包含 [1,2] 。
-collection.remove(1);
-
-// getRandom 应有相同概率返回 1 和 2 。
-collection.getRandom();
+请尽可能的优化算法的时间复杂度和空间复杂度。 输入的数据 n 小于等于 5,000,000。
 */
 
-type RandomizedCollection struct {
-    m map[int]int
-}
 
-/** Initialize your data structure here. */
-func Constructor() RandomizedCollection {
-    return RandomizedCollection{m: make(map[int]int)}
-}
 
-/** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
-func (this *RandomizedCollection) Insert(val int) bool {
-    _, ok := this.m[val]
-    this.m[val]++
-    return !ok
-}
-
-/** Removes a value from the collection. Returns true if the collection contained the specified element. */
-func (this *RandomizedCollection) Remove(val int) bool {
-    this.m
-
-}
-
-/** Get a random element from the collection. */
-func (this *RandomizedCollection) GetRandom() int {
-
-}
 
 func main() {
+
 
 }
