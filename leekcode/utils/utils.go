@@ -2,6 +2,7 @@ package utils
 
 import (
     "fmt"
+    "math/rand"
 )
 
 type ListNode struct {
@@ -160,4 +161,8 @@ func Abs(num int) int {
         return - num
     }
     return num
+}
+
+func RandInt() int {
+    return rand.Int()
 }
