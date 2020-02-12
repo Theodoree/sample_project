@@ -119,6 +119,14 @@ func PrintTree(root *TreeNode, Type string, array *[]int) {
         } else {
             fmt.Printf(" %d ", root.Val)
         }
+    case "RDL":
+        PrintTree(root.Right, Type, array)
+        if array != nil {
+            *array = append(*array, root.Val)
+        } else {
+            fmt.Printf(" %d ", root.Val)
+        }
+        PrintTree(root.Left, Type, array, )
     }
 }
 
@@ -126,6 +134,7 @@ const (
     DLR   = "DLR"
     LDR   = "LDR"
     LRD   = "LRD"
+    RDL   = "RDL"
     LEVEL = "LEVEL"
     Null  = 0x7777777
 )
