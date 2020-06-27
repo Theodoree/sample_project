@@ -22,9 +22,7 @@ import "fmt"
 func permute(nums []int) [][]int {
     var result [][]int
     Permute(nums, &result, []int{})
-
     return result
-
 }
 
 func Permute(nums []int, result *[][]int, cur []int) {
@@ -39,12 +37,15 @@ func Permute(nums []int, result *[][]int, cur []int) {
         c := make([]int, len(nums))
         copy(c, nums)
         c = append(c[:i], c[i+1:]...)
+        if len(c) > 1 { // tip:剪枝
+            if c[len(c)-2] == c[len(c)-1] {
+                return
+            }
+        }
         Permute(c, result, append(cur, nums[i]))
-
     }
 
 }
-
 
 func main() {
     fmt.Println(permute([]int{1, 2, 3}))
