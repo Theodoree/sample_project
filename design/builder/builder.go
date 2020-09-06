@@ -1,11 +1,12 @@
 package builder
 
+// builder
 type User struct {
     NickName string
     Age      uint64
 }
 
-func getUser(b *builder) (u User) {
+func createUser(b *builder) (u User) {
     u.Age = b.age
     u.NickName = b.nickName
     return
@@ -39,5 +40,5 @@ func (b *builder) build() (User, error) {
         // do something
     }
 
-    return getUser(b), nil
+    return createUser(b), nil
 }

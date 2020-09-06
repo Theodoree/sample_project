@@ -2,7 +2,8 @@ package pdp
 
 import "sync"
 
-// Prototype Design Pattern
+// Prototype Design Pattern 原型模式
+// 大致分为两种,一种是浅拷贝也就是引用类型只复制地址,第二种是深拷贝,递归拷贝,重新申请内存
 
 type service struct {
     m *concurrentMap

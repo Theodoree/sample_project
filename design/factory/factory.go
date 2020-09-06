@@ -2,6 +2,7 @@ package factory
 
 import "errors"
 
+// factory
 type PeopleEnum uint64
 
 const (
@@ -58,7 +59,7 @@ func choiceFactory(enum PeopleEnum) (PeopleFactory, error) {
 
 type teacher struct{}
 
-func (t teacher) Say() {}
+func (t teacher) Say() { println("teacher") }
 func (t teacher) Eat() {}
 
 type teacherFactory struct{}
@@ -69,7 +70,7 @@ func (t teacherFactory) Create() People {
 
 type student struct{}
 
-func (t student) Say() {}
+func (t student) Say() { println("student") }
 func (t student) Eat() {}
 
 type studentFactory struct{}
@@ -80,7 +81,7 @@ func (t studentFactory) Create() People {
 
 type professor struct{}
 
-func (t professor) Say() {}
+func (t professor) Say() { println("professor") }
 func (t professor) Eat() {}
 
 type professorFactory struct{}
@@ -91,7 +92,7 @@ func (t professorFactory) Create() People {
 
 type principal struct{}
 
-func (t principal) Say() {}
+func (t principal) Say() { println("principal") }
 func (t principal) Eat() {}
 
 type principalFactory struct{}
