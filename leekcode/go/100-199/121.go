@@ -23,7 +23,6 @@ func maxProfit(prices []int) int {
     for i := 1; i < len(prices); i++ {
         max = math.Max(float64(max), float64(prices[i])-min)
         min = math.Min(float64(min), float64(prices[i]))
-
     }
 
     return int(max)
