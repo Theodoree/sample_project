@@ -5,7 +5,7 @@ import (
     "testing"
 )
 
-/*
+/* 建造者模式
 tip: 大致就是使用builder去做断言,减少断言对结构的侵入度
 
 

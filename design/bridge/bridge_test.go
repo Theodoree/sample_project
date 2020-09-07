@@ -2,7 +2,7 @@ package bridge
 
 import "testing"
 
-/*
+/* 桥接模式
    tip:将抽象和实现解耦，让它们可以独立变化
    tip:
     使用场景:

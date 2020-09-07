@@ -6,20 +6,23 @@ import "sync"
 
 // 加入购物车,并且站内提示
 
-type Handler interface {
+type Controller interface {
     AddSku(userId uint64, Sku uint64)
 }
 
-type service struct {
+type controller struct {
 }
 
-func (s *service) AddSku(userId uint64, Sku uint64) {
+func (s *controller) AddSku(userId uint64, Sku uint64) {
 
     GetCartService().Add(userId, Sku)
     createCartNotify(userId, Sku).send()
 
 }
 
+func NewController() Controller {
+    return &controller{}
+}
 
 // 提示
 type notify interface {
@@ -33,6 +36,7 @@ type cartNotify struct {
 
 func (c *cartNotify) send() {
     // do something
+    println("send msg")
 }
 
 func createCartNotify(userId uint64, Sku uint64) notify {
@@ -41,9 +45,6 @@ func createCartNotify(userId uint64, Sku uint64) notify {
         SkuId:  Sku,
     }
 }
-
-
-
 
 // 购物车
 type Cart interface {
@@ -59,6 +60,7 @@ type cart struct {
 
 func (c *cart) Add(userId uint64, Sku uint64) error {
     // do something
+    println("加购")
     return nil
 }
 
