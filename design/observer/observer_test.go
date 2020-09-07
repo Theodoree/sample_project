@@ -1,4 +1,4 @@
-package odp
+package observer
 
 import "testing"
 

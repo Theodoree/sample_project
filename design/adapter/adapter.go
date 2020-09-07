@@ -1,4 +1,4 @@
-package adp
+package adapter
 
 type Wallet interface {
     Balance() uint64 // 分

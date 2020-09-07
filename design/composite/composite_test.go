@@ -1,4 +1,4 @@
-package cdp
+package composite
 
 import (
     "fmt"

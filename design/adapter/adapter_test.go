@@ -1,4 +1,4 @@
-package adp
+package adapter
 
 import "testing"
 

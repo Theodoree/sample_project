@@ -1,4 +1,4 @@
-package fdp1
+package flyweight
 
 import "sync"
 

@@ -1,4 +1,4 @@
-package pdp
+package prototype
 
 import "sync"
 

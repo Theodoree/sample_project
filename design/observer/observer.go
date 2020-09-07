@@ -1,4 +1,4 @@
-package odp
+package observer
 
 type RegObserver interface {
     handlerRegSuccess(userId uint64)

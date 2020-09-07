@@ -13,7 +13,6 @@ require (
 	github.com/parnurzeal/gorequest v0.2.16
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/streadway/amqp v1.0.0
-	github.com/stretchr/testify v1.4.0
 	github.com/ziutek/mymysql v1.5.4
 	golang.org/x/crypto v0.0.0-20200602180216-279210d13fed
 	gopkg.in/ini.v1 v1.57.0
