@@ -11,6 +11,7 @@ type resourcePool struct {
     nodePool  sync.Pool
     leafPool  sync.Pool
     valuePool sync.Pool
+    tempKeyPool  sync.Pool
     tempPool  sync.Pool
 }
 
@@ -29,7 +30,7 @@ func newResourcePool() *resourcePool {
     }
 
     p.tempPool.New = func() interface{} {
-        return make([]interface{}, order)
+        return make([]interface{}, order+1)
     }
 
     return &p

@@ -1,7 +1,7 @@
 package bptree
 
 type value struct {
-    val interface{}
+    val uint64
 }
 
 func NewValue() *value {
@@ -9,5 +9,5 @@ func NewValue() *value {
 }
 
 func (v *value) reset() {
-    v.val = nil
+    v.val = 0
 }

@@ -28,17 +28,14 @@ func BenchmarkNormalHandler(b *testing.B) {
     b.RunParallel(func(pb *testing.PB) {
         for pb.Next() {
             c <- struct{}{}
-
             go func() {
                 defer func() {
                     <- c
                 }()
                 test1()
             }()
-
         }
     })
-
 }
 
 func test1() {

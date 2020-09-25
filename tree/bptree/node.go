@@ -14,7 +14,7 @@ type node struct {
 func newNode() *node {
     var n = &node{}
 
-    n.childKeys = make([]uint64, order, order)
+    n.childKeys = make([]uint64, order - 1, order - 1)
     n.child = make([]unsafe.Pointer, order, order)
     n.IsLeaf = false
     n.Parent = nil

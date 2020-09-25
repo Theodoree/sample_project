@@ -8,25 +8,30 @@ import (
 
 const (
     DEFAULT_ORDER = 1 << 10 // 1024 2048 4096
+    //DEFAULT_ORDER = 4 // 1024 2048 4096
     // 每次节点都有order个节点
     order = DEFAULT_ORDER
+
+    nextLeafIndex     = order - 1
+    leafMaxIndex      = order - 1
+    indexNodeMaxIndex = order - 1
 )
 
-
 /*tip: tree
-                                                    root
-                                        child[node_a,node_b,node_c]
-                            /                          |                        \
-                        nodea                       node_b                      node_c
-    child[value_a,value_b....  node_b]    child[value_c value_d ...... node_c]   child[value_e value_f ....... 0]
+                                                  root
+                                      child[node_a,node_b,node_c]
+                          /                          |                        \
+                      nodea                       node_b                      node_c
+  child[value_a,value_b....  node_b]    child[value_c value_d ...... node_c]   child[value_e value_f ....... 0]
 */
 
-
-
-
 /*
-tip:
-    规则A:最后一个child为node节点,指向下一个节点
+tip:                                        那么索引最大值就是order-2
+    规则A:在叶子节点中,key和child节点的关系对应的,value节点最多数量为order-1,最后一个child指针指向右边的叶子节点(如果为空,那么该节点已经处于最右边)
+    规则B:索引从0开始,指针在i+1处指向带有键的子树,如果key值在index[0]和index[1]之间,那么选择的child就是child[0]
+    规则C:在叶子节点中有效指针数为num_keys,
+    规则D:索引节点中有效指针为num_keys+1
+    规则E:num_keys字段用来跟踪当前节点的有效指针数(数组都为预分配)
 */
 
 type BpTree struct {
@@ -38,6 +43,9 @@ type BpTree struct {
 tip: <<<<<<<<<<<<<<-打印相关函数->>>>>>>>>>>>>
 */
 
+/*
+desc: 返回child到root的长度
+*/
 func (tree *BpTree) pathToRoot(child *node) uint64 {
     c := child
     var length uint64
@@ -48,6 +56,10 @@ func (tree *BpTree) pathToRoot(child *node) uint64 {
     return length
 
 }
+
+/*
+desc: 返回树的高度
+*/
 func (tree *BpTree) height() uint64 {
     var cnt uint64
     root := tree.root
@@ -57,6 +69,7 @@ func (tree *BpTree) height() uint64 {
     }
     return cnt
 }
+
 /*
 desc: 打印所有叶子节点
 */
@@ -74,21 +87,22 @@ func (tree *BpTree) PrintLeaves() {
 
     for {
         for i := 0; i < cur.numKeys; i++ {
-            fmt.Println(cur.childKeys[i],(*value)(cur.child[i]).val)
+            fmt.Print(cur.childKeys[i], (*value)(cur.child[i]).val, "\t")
         }
 
-
         /*
-        case:如果child[order-1]等于nil的话,那么说明已经遍历完毕,否则继续获取下一个叶子节点
+           case:如果child[order-1]等于nil的话,那么说明已经遍历完毕,否则继续获取下一个叶子节点
+                nextLeafIndex = order - 1
         */
-        if cur.child[order-1] != nil {
-            cur = (*node)(cur.child[order-1])
+        if cur.child[nextLeafIndex] != nil {
+            cur = (*node)(cur.child[nextLeafIndex])
         } else {
             break
         }
     }
     fmt.Println()
 }
+
 /*
 desc: 打印整个tree
 */
@@ -106,8 +120,12 @@ func (tree *BpTree) PrintTree() {
 
     // 先进先出
     l.PushBack(root)
-    for l.Len() != 0 {
-        n := l.Front().Value.(*node)
+    for l.Len() > 0 {
+        l.Front()
+
+        el := l.Front()
+        n := el.Value.(*node)
+        l.Remove(el)
         if n.Parent != nil && unsafe.Pointer(n) == n.Parent.child[0] {
             curDepth := tree.pathToRoot(n)
             if curDepth != depth {
@@ -116,16 +134,23 @@ func (tree *BpTree) PrintTree() {
             }
         }
 
-        for i := 0; i < n.numKeys; i++ {
-            print(n.childKeys[i])
+        if n.IsLeaf {
+            print("leaf: ")
+        } else {
+            print("索引: ")
         }
+
+        for i := 0; i < n.numKeys; i++ {
+            fmt.Printf("%d ", n.childKeys[i])
+        }
+
         if !n.IsLeaf {
-            for i := 0; i < n.numKeys; i++ {
+            for i := 0; i <= n.numKeys; i++ {
                 l.PushBack((*node)(n.child[i])) // 入队
             }
         }
-        print("|  ")
 
+        print("|  ")
     }
     println()
 }
@@ -158,7 +183,9 @@ func (tree *BpTree) findAndPrintRange(start, end uint64) {
 tip: <<<<<<<<<<<<<<-查找相关函数->>>>>>>>>>>>>
 */
 
-// 返回value
+/*
+desc: 返回value
+*/
 func (tree *BpTree) find(key uint64, leafOut **node) *value {
     if tree.root == nil {
         return nil
@@ -179,6 +206,9 @@ func (tree *BpTree) find(key uint64, leafOut **node) *value {
         *leafOut = leaf
     }
 
+    /*
+       case: 如果i< left.numKeys,那么说明找到了
+    */
     if i < leaf.numKeys {
         return (*value)(leaf.child[i])
     }
@@ -186,16 +216,24 @@ func (tree *BpTree) find(key uint64, leafOut **node) *value {
     return nil
 }
 
-// 返回Start-end之间的节点
+/*
+desc: 返回Start-end之间的节点
+*/
 func (tree *BpTree) findRange(start, end uint64) ([]uint64, []*value) {
+    // 找到叶子节点
     leaf := tree.findLeaf(start)
     if leaf == nil {
         return nil, nil
     }
     var i int
-    for i = 0; i < leaf.numKeys && leaf.childKeys[i] < start; i++ {
+    /*
+       case: 在子keys寻找指定节点
+    */
+    for i < leaf.numKeys && leaf.childKeys[i] < start {
+        i++
     }
 
+    // 没有找到
     if i == leaf.numKeys {
         return nil, nil
     }
@@ -203,10 +241,20 @@ func (tree *BpTree) findRange(start, end uint64) ([]uint64, []*value) {
     var arr []*value
     var key []uint64
 
+    /*
+       case: 叶子节点
+    */
     for leaf != nil {
+        /*
+           case: 将所有符合条件value节点都加入数组
+        */
         for ; i < leaf.numKeys && leaf.childKeys[i] <= end; i++ {
             key = append(key, leaf.childKeys[i])
             arr = append(arr, (*value)(leaf.child[i]))
+        }
+        // 那么说明没有遍历到尾部,也不需要扫描接下来的叶子节点了
+        if i != leaf.numKeys {
+            break
         }
         leaf = (*node)(leaf.child[order-1]) // 获取下一个叶子节点
         i = 0
@@ -215,18 +263,19 @@ func (tree *BpTree) findRange(start, end uint64) ([]uint64, []*value) {
     return key, arr
 }
 
-// 返回叶子节点
+/*
+desc: 返回叶子节点
+*/
 func (tree *BpTree) findLeaf(key uint64) *node {
     if tree.root == nil {
         return nil
     }
 
     n := tree.root
-
     for !n.IsLeaf {
         i := 0
 
-        for i < n.numKeys { // 寻找位置
+        for i < n.numKeys { //寻找子节点位置
             if key >= n.childKeys[i] {
                 i++
             } else {
@@ -239,7 +288,9 @@ func (tree *BpTree) findLeaf(key uint64) *node {
     return n
 }
 
-// 返回node在parent subChild中的下标
+/*
+desc: 返回node在parent subChild中的下标
+*/
 func (tree *BpTree) GetLeftIndex(parent, left *node) int {
     var leftIndex = 0
     for leftIndex <= parent.numKeys && parent.child[leftIndex] != unsafe.Pointer(left) {
@@ -248,7 +299,9 @@ func (tree *BpTree) GetLeftIndex(parent, left *node) int {
     return leftIndex
 }
 
-// 返回邻居节点下标 如果没有邻居那么是返回-1
+/*
+desc: 返回邻居节点下标 如果没有邻居那么是返回-1
+*/
 func (tree *BpTree) getNeighborIndex(n *node) (int, error) {
 
     for i := 0; i < n.Parent.numKeys; i++ {
@@ -264,15 +317,13 @@ func (tree *BpTree) getNeighborIndex(n *node) (int, error) {
 tip: <<<<<<<<<<<<<<-插入相关函数->>>>>>>>>>>>>
 */
 
-// 将k、v 插入叶子节点
+/*
+desc: 将k、v 插入叶子节点
+*/
 func (tree *BpTree) insertIntoLeaf(leaf *node, key uint64, val *value) *node {
     var (
         insertionPoint int
     )
-
-    if !leaf.IsLeaf {
-        return nil
-    }
 
     // 寻找插入位置
     for insertionPoint < leaf.numKeys && leaf.childKeys[insertionPoint] < key {
@@ -287,29 +338,30 @@ func (tree *BpTree) insertIntoLeaf(leaf *node, key uint64, val *value) *node {
 
     leaf.childKeys[insertionPoint] = key
     leaf.child[insertionPoint] = unsafe.Pointer(val)
+    leaf.numKeys++
     return leaf
 }
 
-// 叶子节点分裂
-func (tree *BpTree) insertLeafAfterSplitting(leaf *node, key uint64, record *value) {
+/*
+desc: 插入后,叶子节点分裂
+*/
+func (tree *BpTree) insertIntoLeafAfterSplitting(leaf *node, key uint64, record *value) {
 
     if !leaf.IsLeaf {
         return
     }
 
     newLeaf := tree.pool.GetLeaf()
-
-    insertionIndex := 0
-    // 找到插入位置
-    for insertionIndex < order-1 && leaf.childKeys[insertionIndex] < key {
-        insertionIndex++
-    }
-
     tmpKey := tree.pool.GetTempSlice()
     tmpChild := tree.pool.GetTempSlice()
 
+    insertionIndex := 0
+    // 找到插入位置,既然是页分裂,那么该叶子节点必然已经满了
+    for insertionIndex < leafMaxIndex && leaf.childKeys[insertionIndex] < key {
+        insertionIndex++
+    }
+
     var i, j int
-    // 针对高缓优化
     for i < leaf.numKeys {
         // skip 插入位置
         if j == insertionIndex {
@@ -317,13 +369,15 @@ func (tree *BpTree) insertLeafAfterSplitting(leaf *node, key uint64, record *val
         }
         tmpChild[j] = leaf.child[i]
         tmpKey[j] = leaf.childKeys[i]
+        i++
+        j++
     }
 
     tmpKey[insertionIndex] = key
     tmpChild[insertionIndex] = unsafe.Pointer(record)
 
     leaf.numKeys = 0
-    split := cut(order - 1)
+    split := cut(leafMaxIndex)
 
     // 页分裂,重置节点
     for i := 0; i < split; i++ {
@@ -348,82 +402,104 @@ func (tree *BpTree) insertLeafAfterSplitting(leaf *node, key uint64, record *val
 
     // before: oldLeaf      -      oldRightLeaf
     // after: oldLeaf - newLeaf - oldRightLeaf
-    newLeaf.child[order-1] = leaf.child[order-1]
-    leaf.child[order-1] = unsafe.Pointer(newLeaf)
+    newLeaf.child[nextLeafIndex] = leaf.child[nextLeafIndex]
+    leaf.child[nextLeafIndex] = unsafe.Pointer(newLeaf)
 
     // 将分裂出去的child节点设置为空
-    for i := leaf.numKeys; i < order-1; i++ {
+    for i := leaf.numKeys; i < leafMaxIndex; i++ {
         leaf.child[i] = nil
     }
 
-    newLeaf.Parent = leaf.Parent
+    for i := newLeaf.numKeys; i < leafMaxIndex; i++ {
+        newLeaf.child[i] = nil
+    }
 
+    // 设置共同父节点
+    newLeaf.Parent = leaf.Parent
+    // 当前节点的子节点的最小key
     newKey := newLeaf.childKeys[0]
 
     tree.insertIntoParent(leaf, newKey, newLeaf)
 }
 
-// node节点分裂
-func (tree *BpTree) insertNodeAfterSplitting(parent, right *node, leftIndex int, key uint64) {
+/*
+desc: 插入后,node节点分裂
+*/
+func (tree *BpTree) insertIntoNodeAfterSplitting(oldNode, right *node, leftIndex int, key uint64) {
 
     tmpChild := tree.pool.GetTempSlice()
     tmpKey := tree.pool.GetTempSlice()
 
     var i, j int
 
-    for i < parent.numKeys+1 {
+    for i < oldNode.numKeys+1 {
         // 插入位置,跳过
         if j == leftIndex+1 {
             j++
         }
-        tmpChild[j] = parent.child[i]
-        tmpKey[j] = parent.child[i]
+        tmpChild[j] = oldNode.child[i]
+        j++
+        i++
     }
 
-    tmpChild[leftIndex+1] = right
+    i = 0
+    j = 0
+    // childkey比child少一个
+    for i < oldNode.numKeys {
+        if j == leftIndex {
+            j++
+        }
+        tmpKey[j] = oldNode.childKeys[i]
+        j++
+        i++
+    }
+
+    tmpChild[leftIndex+1] = unsafe.Pointer(right)
     tmpKey[leftIndex] = key
 
     //开始分裂
     split := cut(order)
-    newParentNode := tree.pool.GetNode()
-    parent.numKeys = 0
-    for i := 0; i < split-1; i++ {
-        parent.childKeys[i] = tmpKey[i].(uint64)
-        parent.child[i] = tmpChild[i].(unsafe.Pointer)
-        parent.numKeys++
+    newNode := tree.pool.GetNode()
+    oldNode.numKeys = 0
+
+    for i = 0; i < split-1; i++ {
+        oldNode.childKeys[i] = tmpKey[i].(uint64)
+        oldNode.child[i] = tmpChild[i].(unsafe.Pointer)
+        oldNode.numKeys++
     }
 
-    parent.child[split-1] = tmpChild[split-1].(unsafe.Pointer)
-    kPrime := tmpKey[split-2].(uint64)
+    oldNode.child[i] = tmpChild[i].(unsafe.Pointer)
+    kPrime := tmpKey[split-1].(uint64)
 
     // j 是newnode的下标
     j = 0
-    i = split
+    i++
     for i < order {
-        newParentNode.child[j] = tmpChild[i].(unsafe.Pointer)
-        newParentNode.childKeys[j] = tmpKey[i].(uint64)
-        newParentNode.numKeys++
+        newNode.child[j] = tmpChild[i].(unsafe.Pointer)
+        newNode.childKeys[j] = tmpKey[i].(uint64)
+        newNode.numKeys++
         i++
         j++
     }
 
     // 最后一个节点是链接的节点 这里的i等于order
-    newParentNode.child[j] = tmpChild[i].(unsafe.Pointer)
+    newNode.child[j] = tmpChild[i].(unsafe.Pointer)
 
     tree.pool.PutTempSlice(tmpChild)
     tree.pool.PutTempSlice(tmpKey)
 
-    newParentNode.Parent = parent.Parent
+    newNode.Parent = oldNode.Parent
     // 遍历子节点
-    for i := 0; i < newParentNode.numKeys; i++ {
-        (*node)(newParentNode.child[i]).Parent = newParentNode
+    for i := 0; i <= newNode.numKeys; i++ {
+        (*node)(newNode.child[i]).Parent = newNode
     }
-
     // 将新parent节点与祖先节点相关联
-    tree.insertIntoParent(parent, kPrime, newParentNode)
+    tree.insertIntoParent(oldNode, kPrime, newNode)
 }
 
-// 插入到父节点
+/*
+desc: 将right节点和parent节点关联
+*/
 func (tree *BpTree) insertIntoParent(left *node, key uint64, right *node) {
     parent := left.Parent
     if parent == nil { // 如果为空,俺么插入新root节点
@@ -431,40 +507,57 @@ func (tree *BpTree) insertIntoParent(left *node, key uint64, right *node) {
         return
     }
 
+    /*
+       case:查找left在父节点child中的下标
+    */
     leftIndex := tree.GetLeftIndex(parent, left)
-    // 如果有位置,那么直接插入
-    if parent.numKeys < order-1 {
+    /*
+       case:如果有位置,那么直接插入
+    */
+    if parent.numKeys < indexNodeMaxIndex {
         tree.insertIntoNode(parent, right, leftIndex, key)
         return
     }
 
-    // 否则就必须页分裂后插入了
-    tree.insertNodeAfterSplitting(parent, right, leftIndex, key)
+    /*
+       case:那么就需要分裂
+    */
+    tree.insertIntoNodeAfterSplitting(parent, right, leftIndex, key)
 }
-func (tree *BpTree) insertIntoNode(parent, right *node, leftIndex int, key uint64, ) {
-    for i := parent.numKeys; i > leftIndex; i-- {
-        // 整体向前移动一步
-        parent.child[i+1] = parent.child[i]
-        parent.childKeys[i] = parent.childKeys[i-1]
 
+/*
+desc: 将right节点插入n(parent)节点
+*/
+func (tree *BpTree) insertIntoNode(n, right *node, leftIndex int, key uint64, ) {
+    for i := n.numKeys; i > leftIndex; i-- {
+        // 整体向前移动一步
+        n.child[i+1] = n.child[i]
+        n.childKeys[i] = n.childKeys[i-1]
     }
 
-    parent.child[leftIndex+1] = unsafe.Pointer(right)
-    parent.childKeys[leftIndex] = key
-    parent.numKeys++
+    n.child[leftIndex+1] = unsafe.Pointer(right)
+    n.childKeys[leftIndex] = key
+    n.numKeys++
 
 }
+
+/*
+desc: 插入新root
+*/
 func (tree *BpTree) insertIntoNewRoot(left, right *node, key uint64) {
     tree.root = tree.pool.GetNode()
     tree.root.childKeys[0] = key
     tree.root.child[0] = unsafe.Pointer(left)
     tree.root.child[1] = unsafe.Pointer(right)
     tree.root.numKeys++
+    tree.root.Parent = nil
     left.Parent = tree.root
     right.Parent = tree.root
 }
 
-// 创建root节点
+/*
+desc: 创建新root
+*/
 func (tree *BpTree) startNewTree(key uint64, value *value) {
     tree.root = tree.pool.GetLeaf()
     tree.root.childKeys[0] = key
@@ -476,17 +569,23 @@ func (tree *BpTree) startNewTree(key uint64, value *value) {
 tip: <<<<<<<<<<<<<<-删除相关函数->>>>>>>>>>>>>
 */
 
-// 从n的subChild中删除deleteNode
+/*
+desc: 从n的subChild中删除entry
+*/
 func (tree *BpTree) removeEntryFromNode(n *node, entry unsafe.Pointer, key uint64) {
 
     i := 0
-    // 找到node的节点
+    /*
+       case:先找到节点
+    */
     for n.childKeys[i] != key {
         i++
     }
 
-    //将要删除的位置往后的元素都向前移动一格
     i++
+    /*
+       case:将要删除的位置往后的元素都向前移动一格(覆盖要删除的节点)
+    */
     for ; i < n.numKeys; i++ {
         n.childKeys[i-1] = n.childKeys[i]
     }
@@ -504,11 +603,13 @@ func (tree *BpTree) removeEntryFromNode(n *node, entry unsafe.Pointer, key uint6
     }
 
     i++
+    /*
+       case:将要删除的位置往后的元素都向前移动一格(覆盖要删除的节点)
+    */
     for ; i < numPointer; i++ {
         n.child[i-1] = n.child[i]
     }
 
-    // 已被覆盖
     n.numKeys--
 
     if n.IsLeaf {
@@ -523,12 +624,16 @@ func (tree *BpTree) removeEntryFromNode(n *node, entry unsafe.Pointer, key uint6
 
 }
 
-// 删除
+/*
+desc: 删除一个entry,并且调整树
+*/
 func (tree *BpTree) deleteEntry(n *node, entry unsafe.Pointer, key uint64) error {
 
     tree.removeEntryFromNode(n, entry, key)
 
-    // 如果n是root节点
+    /*
+       case: 如果n是root节点
+    */
     if n == tree.root {
         tree.adjustRoot()
         return nil
@@ -541,19 +646,25 @@ func (tree *BpTree) deleteEntry(n *node, entry unsafe.Pointer, key uint64) error
         minKeys = cut(order - 1)
     }
 
-    // 如果n节点数量大于minKeys,那么不需要调整
+    /*
+       case: 如果n子节点数量大于minKeys,那么不需要调整
+    */
     if n.numKeys >= minKeys {
         return nil
     }
 
-    // 否则需要调整
+    /*
+       case: 小于那么就需要调整了,获取n的邻居节点
+    */
     neighborIndex, err := tree.getNeighborIndex(n)
     if err == nil {
         return err
     }
 
     kPrimeIndex := neighborIndex
-    // 如果parent节点是在数组[0]的位置
+    /*
+       case:如果n处于child[0],不能让kPrimeIndex为负值
+    */
     if neighborIndex == -1 {
         kPrimeIndex = 0
     }
@@ -561,7 +672,10 @@ func (tree *BpTree) deleteEntry(n *node, entry unsafe.Pointer, key uint64) error
     kPrime := n.Parent.childKeys[kPrimeIndex]
 
     var neighbor *node
-    if neighborIndex == -1 { // 如果为-1,那么邻居在右边
+    /*
+       case:如果neighborIndex是负一,那么邻居节点必然为1
+    */
+    if neighborIndex == -1 {
         neighbor = (*node)(n.Parent.child[1])
     } else {
         neighbor = (*node)(n.Parent.child[neighborIndex])
@@ -594,33 +708,44 @@ func (tree *BpTree) deleteEntry(n *node, entry unsafe.Pointer, key uint64) error
 /*
 tip: <<<<<<<<<<<<<<-调整相关函数->>>>>>>>>>>>>
 */
-// 调整root
-func (tree *BpTree) adjustRoot() *node {
+
+/*
+desc: 调整root
+*/
+func (tree *BpTree) adjustRoot() {
 
     if tree.root == nil {
-        return nil
+        return
     }
 
-    // 不为空的root,直接返回
+    /*
+       case:child不为空,直接返回
+    */
     if tree.root.numKeys > 0 {
-        return tree.root
+        return
     }
 
-    var newRoot *node
-
-    // 如果不是叶子节点(子节点是value),且子节点不为空,那么提拔第一个为新root
+    /*
+       case:如果不是叶子节点(子节点是value),且子节点不为空,那么提拔第一个为新root
+    */
     if !tree.root.IsLeaf {
-        newRoot = (*node)(tree.root.child[0])
-        tree.root = newRoot
+        n := tree.root
+        tree.root = (*node)(tree.root.child[0])
+        tree.root.Parent = nil
+
+        // 内存池优化
+        tree.pool.PutNode(n)
     } else { // 如果是叶子节点,那么说明整个树都是空的
         tree.root = nil
     }
 
-    return newRoot
+    return
 
 }
 
-// 合并节点
+/*
+desc: 合并节点
+*/
 func (tree *BpTree) coalesceNode(n, neighbor *node, neighborIndex int, kPrime uint64) {
 
     /*
@@ -634,7 +759,10 @@ func (tree *BpTree) coalesceNode(n, neighbor *node, neighborIndex int, kPrime ui
 
     neighborInsertionIndex := neighbor.numKeys
 
-    if !n.IsLeaf { // 不是叶子节点 直接加在后面
+    /*
+       case:非叶子节点,直接添加到后面
+    */
+    if !n.IsLeaf {
         neighbor.childKeys[neighborInsertionIndex] = kPrime
         neighbor.numKeys++
 
@@ -658,14 +786,22 @@ func (tree *BpTree) coalesceNode(n, neighbor *node, neighborIndex int, kPrime ui
         // 指针的数量永远比key多一个
         neighbor.child[i] = n.child[j]
 
+        /*
+           case:设置child的parent
+        */
         for i := 0; i < neighbor.numKeys; i++ {
             (*node)(neighbor.child[i]).Parent = neighbor
         }
-    } else { // 是叶子节点
+
+    } else {
+        /*
+           case:叶子节点
+        */
         var (
             j = 0
             i = neighborInsertionIndex
         )
+
         for j < n.numKeys {
 
             neighbor.childKeys[i] = n.childKeys[j]
@@ -679,33 +815,43 @@ func (tree *BpTree) coalesceNode(n, neighbor *node, neighborIndex int, kPrime ui
         }
 
         // 连接底层value的node
-        neighbor.child[order-1] = n.child[order-1]
+        neighbor.child[nextLeafIndex] = n.child[nextLeafIndex]
     }
 
     tree.deleteEntry(n.Parent, unsafe.Pointer(n), kPrime)
 
+    // 内存池优化
+    tree.pool.PutNode(n)
 }
 
-// 重新分配child节点
+/*
+desc:  重新分配child节点
+*/
 func (tree *BpTree) redistributeNodes(n, neighbor *node, neighborIndex int, kPrimeIndex int, kPrime uint64) {
+
+    /*
+       case:邻居在右边( 0 - 1 = -1),n处于数组[0]
+    */
 
     if neighborIndex != -1 {
         /*
-           邻居在n左边
-           那么取出邻居最后一对键值对
-           设置到n的左边
+           case: 不是叶子节点,那么需要保存最后一个key
         */
-
-        if !n.IsLeaf { //不是叶子节点,那么需要保存最后一个key
+        if !n.IsLeaf {
             n.child[n.numKeys+1] = n.child[n.numKeys]
         }
 
-        // 整体向后移动一格,那么0的位置现在是空的
+        /*
+           case: 整体向后移动一格,那么0和1的值是一致的
+        */
         for i := n.numKeys; i > 0; i-- {
             n.child[i] = n.child[i-1]
             n.childKeys[i] = n.childKeys[i-1]
         }
 
+        /*
+           case:
+        */
         if !n.IsLeaf {
             // 如果是node节点,那么数量比叶子节点多一个键值对
             n.child[0] = neighbor.child[neighbor.numKeys]
@@ -718,16 +864,22 @@ func (tree *BpTree) redistributeNodes(n, neighbor *node, neighborIndex int, kPri
             n.Parent.childKeys[kPrimeIndex] = neighbor.childKeys[neighbor.numKeys-1]
         } else {
             // 叶子节点比node少一个键值对
-            n.child[0] = neighbor.child[neighbor.numKeys-1]         //获取最后一个叶子节点
-            n.childKeys[0] = neighbor.childKeys[neighbor.numKeys-1] //获取最后一个叶子节点
-            (*node)(n.child[0]).Parent = n                          // 重新设置parent节点
-
-            n.Parent.childKeys[kPrimeIndex] = n.childKeys[0]
+            n.child[0] = neighbor.child[neighbor.numKeys-1] //获取最后一个叶子节点
             neighbor.child[neighbor.numKeys-1] = nil
+            n.childKeys[0] = neighbor.childKeys[neighbor.numKeys-1] //获取最后一个叶子节点
+            n.Parent.childKeys[kPrimeIndex] = n.childKeys[0]
+
+            //(*node)(n.child[0]).Parent = n                          // 重新设置parent节点
+
         }
     } else {
         /*
            邻居在右边,从右边的邻居取一对键指针,增加到n上
+        */
+
+        /*
+           case: 索引节点:
+           case: 否则:
         */
 
         if !n.IsLeaf {
@@ -742,12 +894,18 @@ func (tree *BpTree) redistributeNodes(n, neighbor *node, neighborIndex int, kPri
         }
 
         var i int
-        // 向前移动一个一格
+
+        /*
+           case: 向前移动一格
+        */
         for i = 0; i < neighbor.numKeys-1; i++ {
             neighbor.childKeys[i] = neighbor.childKeys[i+1]
             neighbor.child[i] = neighbor.child[i+1]
         }
 
+        /*
+           case: 如果找到,那么就直接删除
+        */
         if !n.IsLeaf {
             neighbor.child[i] = neighbor.child[i+1]
         }
@@ -775,31 +933,33 @@ func (tree *BpTree) Delete(key uint64) {
         tree.deleteEntry(leaf, unsafe.Pointer(value), key)
 
         // 内存池优化
-        value.reset()
-        tree.pool.valuePool.Put(value)
+        tree.pool.PutValue(value)
     }
 
     return
 }
 
-func (tree *BpTree) Insert(key uint64, value interface{}) {
+func (tree *BpTree) Insert(key uint64, value uint64) {
 
-    val := tree.find(key, nil)
+    valueNode := tree.find(key, nil)
 
-    if val != nil { // 如果找到直接更新
-        val.val = value
+    /*
+       case: value节点存在,直接更新
+    */
+    if valueNode != nil { // 如果找到直接更新
+        valueNode.val = value
         return
     }
 
-    val = tree.pool.GetValue()
-    val.val = value
+    valueNode = tree.pool.GetValue()
+    valueNode.val = value
 
     /*
        case: root不存在,创建
     */
 
     if tree.root == nil {
-        tree.startNewTree(key, val)
+        tree.startNewTree(key, valueNode)
         return
     }
 
@@ -811,16 +971,15 @@ func (tree *BpTree) Insert(key uint64, value interface{}) {
     /*
        case: 如果叶子节点有足够位置,直接插入
     */
-    if leaf.numKeys < order-1 {
-        tree.insertIntoLeaf(leaf, key, val)
+    if leaf.numKeys < leafMaxIndex {
+        tree.insertIntoLeaf(leaf, key, valueNode)
         return
     }
 
     /*
        case: 空间不足,就得页分裂了.
     */
-    // 页分裂
-    tree.insertLeafAfterSplitting(leaf, key, val)
+    tree.insertIntoLeafAfterSplitting(leaf, key, valueNode)
 }
 
 /*
