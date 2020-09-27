@@ -19,24 +19,30 @@ func TestNewBpTree(t *testing.T) {
     rand.Seed(time.Now().Unix())
 
 
-    for i := 1; i < 400000; i++ {
+    for i := 1; i < 100000; i++ {
         tree.Insert(uint64(i), uint64(i))
     }
-    runtime.GC()
-
-    runtime.ReadMemStats(&stats)
-    fmt.Printf("%.2fM object %d \n",float64(stats.HeapAlloc)/1024/1024,stats.HeapObjects)
 
 
-    println(tree.root.child[0])
+    tree.findAndPrint(150)
 
-    tree.DestroyTree()
+    tree.Delete(150)
+
+    tree.findAndPrint(150)
+
+
+    //runtime.GC()
+    //runtime.ReadMemStats(&stats)
+    //fmt.Printf("%.2fM object %d \n",float64(stats.HeapAlloc)/1024/1024,stats.HeapObjects)
+
+
+    //tree.DestroyTree()
 
 
 
-    runtime.GC()
-    runtime.ReadMemStats(&stats)
-    fmt.Printf("%.2fM object %d \n",float64(stats.HeapAlloc)/1024/1024,stats.HeapObjects)
+    //runtime.GC()
+    //runtime.ReadMemStats(&stats)
+    //fmt.Printf("%.2fM object %d \n",float64(stats.HeapAlloc)/1024/1024,stats.HeapObjects)
 
 }
 
