@@ -1,5 +1,9 @@
 package avltree
 
+/*
+https://zh.wikipedia.org/wiki/AVL%E6%A0%91
+*/
+
 const (
     leftNodeIndex  = 0
     rightNodeIndex = 1
