@@ -121,11 +121,14 @@ func (cache *LRUCache) removeLast() {
     n := cache.Tail
     if n != nil {
         delete(cache.KeyMap, n.Key)
+        old:=cache.Tail
         parent := cache.Tail.Prev
         if parent != nil {
             parent.Next = nil
         }
         cache.Tail = parent
+
+        cache.pool.Put(old)
     }
 }
 
