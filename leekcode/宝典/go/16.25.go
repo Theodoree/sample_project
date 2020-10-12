@@ -1,8 +1,6 @@
-package main
+package _go
 
-import (
-    "sync"
-)
+import "sync"
 
 /*
 面试题 16.25. LRU缓存
@@ -173,22 +171,3 @@ func (cache *LRUCache) print() {
     println()
 }
 
-func main() {
-
-    c := Constructor(2)
-    c.Put(1, 1)
-    c.Put(2, 2)
-    c.Get(1)
-
-    c.Put(3, 3)
-
-    c.Get(2)
-
-    c.Put(4, 4)
-
-    c.Get(1)
-
-    c.Get(3)
-    c.Get(4)
-
-}

@@ -29,63 +29,63 @@ cache.get(4);       // 返回  4
 */
 
 // 时间复杂度较高,空间复杂度较低
-type LRUCache struct {
-    Value       map[int]int
-    ValArr      []int
-    Cap         int
-    KeyIndexMap map[int]int
-    lru         map[int]int
-    lruCNT      int
-}
+//type LRUCache struct {
+//    Value       map[int]int
+//    ValArr      []int
+//    Cap         int
+//    KeyIndexMap map[int]int
+//    lru         map[int]int
+//    lruCNT      int
+//}
+//
+//func Constructor(capacity int) LRUCache {
+//    return LRUCache{ValArr: make([]int, 0, capacity), Cap: capacity, KeyIndexMap: make(map[int]int), lru: make(map[int]int)}
+//}
+//
+//func (this *LRUCache) Get(key int) int {
+//    if idx, ok := this.KeyIndexMap[key]; ok {
+//        delete(this.lru, key)
+//        this.lru[key] = this.lruCNT
+//        this.lruCNT++
+//        return this.ValArr[idx]
+//    }
+//
+//    return -1
+//}
+//
+//func (this *LRUCache) Put(key int, value int) {
+//
+//    // 如果有则更新权重
+//    if idx, ok := this.KeyIndexMap[key]; ok {
+//        this.ValArr[idx] = value
+//
+//        // 如果存在开始淘汰
+//    } else if len(this.ValArr) >= this.Cap {
+//        var minCnt, deleteKey int
+//        minCnt = this.lruCNT
+//        for k, v := range this.lru {
+//            if v < minCnt {
+//                minCnt = v
+//                deleteKey = k
+//            }
+//        }
+//        delete(this.lru, deleteKey)
+//        i := this.KeyIndexMap[deleteKey]
+//        delete(this.KeyIndexMap, deleteKey)
+//        this.KeyIndexMap[key] = i
+//        this.ValArr[i] = value
+//    } else {
+//        this.ValArr = append(this.ValArr, value)
+//        this.KeyIndexMap[key] = len(this.ValArr) - 1
+//
+//    }
+//    this.lru[key] = this.lruCNT
+//    this.lruCNT++
+//
+//}
+//
 
-func Constructor(capacity int) LRUCache {
-    return LRUCache{ValArr: make([]int, 0, capacity), Cap: capacity, KeyIndexMap: make(map[int]int), lru: make(map[int]int)}
-}
 
-func (this *LRUCache) Get(key int) int {
-    if idx, ok := this.KeyIndexMap[key]; ok {
-        delete(this.lru, key)
-        this.lru[key] = this.lruCNT
-        this.lruCNT++
-        return this.ValArr[idx]
-    }
-
-    return -1
-}
-
-func (this *LRUCache) Put(key int, value int) {
-
-    // 如果有则更新权重
-    if idx, ok := this.KeyIndexMap[key]; ok {
-        this.ValArr[idx] = value
-
-        // 如果存在开始淘汰
-    } else if len(this.ValArr) >= this.Cap {
-        var minCnt, deleteKey int
-        minCnt = this.lruCNT
-        for k, v := range this.lru {
-            if v < minCnt {
-                minCnt = v
-                deleteKey = k
-            }
-        }
-        delete(this.lru, deleteKey)
-        i := this.KeyIndexMap[deleteKey]
-        delete(this.KeyIndexMap, deleteKey)
-        this.KeyIndexMap[key] = i
-        this.ValArr[i] = value
-    } else {
-        this.ValArr = append(this.ValArr, value)
-        this.KeyIndexMap[key] = len(this.ValArr) - 1
-
-    }
-    this.lru[key] = this.lruCNT
-    this.lruCNT++
-
-}
-
-
-/*
 
 // 使用node做 双向链表
 type LRUCache struct {
@@ -178,4 +178,4 @@ func (this *LRUCache) Put(key int, value int) {
         this.KeyMap[key] = node
     }
 }
-*/
+
