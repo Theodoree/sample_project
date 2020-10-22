@@ -167,6 +167,9 @@ func (s *Srv) Get(key string) ([]byte, bool, error) {
     defer conn.Close()
     buf, err := redis.Bytes(conn.Do("GET", key))
     if err != nil {
+        if errors.Is(err, redis.ErrNil) {
+            return nil, false, nil
+        }
         return nil, false, err
     }
     return buf, true, nil

@@ -47,8 +47,6 @@ func TestNewSrv(t *testing.T) {
         go threadLock(&srv, "礼包A", i, cb)
     }
 
-
-
     wait.Wait()
 
 }
@@ -88,4 +86,80 @@ func threadLock(s *Srv, key string, GoroutineNum int, cb func()) {
 
     }
 
+}
+
+func BenchmarkNewSrv(b *testing.B) {
+    b.StopTimer()
+    s := redis.NewPool(func() (redis.Conn, error) {
+        conn, err := net.Dial("tcp", "localhost:6379")
+        if err != nil {
+            return nil, err
+        }
+
+        redisConn := redis.NewConn(conn, time.Second*5, time.Second*5)
+
+        //redisConn.Do("AUTH")
+
+        redisConn.Do("PING")
+        return redisConn, nil
+
+    }, 20)
+
+    s.TestOnBorrow = func(c redis.Conn, t time.Time) error {
+        _, err := c.Do("PING")
+        if err != nil {
+            fmt.Println(err)
+        }
+        return err
+    }
+
+    srv := NewSrv(s)
+
+    b.StartTimer()
+    b.RunParallel(func(pb *testing.PB) {
+        for pb.Next() {
+            srv.Get("1")
+
+        }
+
+    })
+
+}
+
+func BenchmarkConn(b *testing.B) {
+    b.StopTimer()
+    s := redis.NewPool(func() (redis.Conn, error) {
+        conn, err := net.Dial("tcp", "localhost:6379")
+        if err != nil {
+            return nil, err
+        }
+
+        redisConn := redis.NewConn(conn, time.Second*5, time.Second*5)
+
+        //redisConn.Do("AUTH")
+
+        redisConn.Do("PING")
+        return redisConn, nil
+
+    }, 20)
+
+    s.TestOnBorrow = func(c redis.Conn, t time.Time) error {
+        _, err := c.Do("PING")
+        if err != nil {
+            fmt.Println(err)
+        }
+        return err
+    }
+
+    srv := NewSrv(s)
+
+    conn := srv.pool.Get()
+
+    defer conn.Close()
+
+    b.StartTimer()
+
+    for i := 0; i < b.N; i++ {
+        conn.Do("GET",1)
+    }
 }
