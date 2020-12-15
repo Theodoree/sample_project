@@ -41,31 +41,42 @@ package _00_899
 对于最后一位顾客，我们无法退回 15 美元，因为我们现在只有两张 10 美元的钞票。
 由于不是每位顾客都得到了正确的找零，所以答案是 false。
 */
+
 func lemonadeChange(bills []int) bool {
-    var five, ten int
+	lemonPrice := 5
 
-    for _, v := range bills {
-        switch v {
-        case 5:
-            five++
-        case 10:
-            ten++
-            five--
-        case 20:
-            if ten == 0 {
-                five -= 3
-            } else {
-                ten--
-                five--
-            }
+	if len(bills) == 0 {
+		return true
+	}
+	if bills[0] != lemonPrice {
+		return false
+	}
 
-        }
+	cashArr := [3]int64{}
 
-        if five < 0 || ten < 0 {
-            return  false
-        }
+	for _, v := range bills {
+		switch v  {
+		case 5: // 5
+			cashArr[0]++
+		case 10: // 10
+			cashArr[1]++
+			cashArr[0]--
+		case 20: // 15
+			// 三种情况,三张五元,或者一张10元和一张5元即可
+			if cashArr[1] == 0 {
+				cashArr[0] -= 3
+			} else {
+				cashArr[0]--
+				cashArr[1]--
+			}
+		}
 
-    }
+		if cashArr[0] < 0 || cashArr[1] < 0 {
+			return false
+		}
 
-    return true
+	}
+
+	return true
+
 }
